@@ -6,40 +6,64 @@ import { industries } from '../data/industries';
 import HeroSection from '../components/HeroSection';
 import CtaBanner from '../components/CtaBanner';
 
-interface ProductCard { name: string; industryId: string; industryName: string; }
+interface ProductCard { name: string; industryId: string; industryName: string; subId: string; subName: string; }
 
 const allProducts: ProductCard[] = industries.flatMap(ind =>
-  ind.products.map(p => ({ name: p, industryId: ind.id, industryName: ind.name }))
+  ind.subcategories.flatMap(sub =>
+    sub.products.map(p => ({
+      name: p,
+      industryId: ind.id,
+      industryName: ind.name,
+      subId: sub.id,
+      subName: sub.name,
+    }))
+  )
 );
 
 export default function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState('');
   const activeIndustry = searchParams.get('industry') ?? 'all';
+  const activeSub      = searchParams.get('sub') ?? 'all';
 
   useEffect(() => { window.scrollTo({ top: 0 }); }, []);
+
+  const activeIndustryData = industries.find(i => i.id === activeIndustry);
 
   const filtered = useMemo(() => {
     let r = allProducts;
     if (activeIndustry !== 'all') r = r.filter(p => p.industryId === activeIndustry);
+    if (activeSub      !== 'all') r = r.filter(p => p.subId      === activeSub);
     if (search.trim()) {
       const q = search.toLowerCase();
-      r = r.filter(p => p.name.toLowerCase().includes(q) || p.industryName.toLowerCase().includes(q));
+      r = r.filter(p =>
+        p.name.toLowerCase().includes(q) ||
+        p.industryName.toLowerCase().includes(q) ||
+        p.subName.toLowerCase().includes(q)
+      );
     }
     return r;
-  }, [activeIndustry, search]);
+  }, [activeIndustry, activeSub, search]);
 
   function setIndustry(id: string) {
-    if (id === 'all') { searchParams.delete('industry'); setSearchParams(searchParams); }
-    else setSearchParams({ industry: id });
+    const next = new URLSearchParams();
+    if (id !== 'all') next.set('industry', id);
+    setSearchParams(next);
+  }
+
+  function setSub(id: string) {
+    const next = new URLSearchParams();
+    if (activeIndustry !== 'all') next.set('industry', activeIndustry);
+    if (id !== 'all') next.set('sub', id);
+    setSearchParams(next);
   }
 
   return (
     <main id="main-content">
       <HeroSection
         title="Our Product Catalogue"
-        subtitle="500+ premium raw ingredients and materials sourced from certified global suppliers across 7 industry verticals."
-        primaryCta={{ label: 'Request a Sample', to: '/contact' }}
+        subtitle="500+ premium raw ingredients and materials sourced from certified global suppliers across pharmaceuticals, food, personal care, and laboratory sectors."
+        primaryCta={{ label: 'Request a Sample', to: '/contact?type=sample' }}
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
@@ -51,11 +75,15 @@ export default function ProductsPage() {
             placeholder="Search products…"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-9 py-2.5 text-sm border border-[#e2e8f0] rounded-lg bg-white text-[#1e293b] placeholder:text-[#94a3b8] focus:outline-none focus:ring-2 focus:ring-[#1d5fa8]/20 focus:border-[#1d5fa8] transition"
+            className="w-full pl-9 pr-9 py-2.5 text-sm border border-[#e2e8f0] rounded-lg bg-white text-[#1e293b] placeholder:text-[#94a3b8] focus:outline-none focus:ring-2 focus:ring-[#1558a7]/20 focus:border-[#1558a7] transition"
             aria-label="Search products"
           />
           {search && (
-            <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94a3b8] hover:text-[#374151]" aria-label="Clear">
+            <button
+              onClick={() => setSearch('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94a3b8] hover:text-[#374151]"
+              aria-label="Clear search"
+            >
               <X size={14} />
             </button>
           )}
@@ -63,13 +91,17 @@ export default function ProductsPage() {
 
         <div className="flex gap-8 flex-col lg:flex-row">
           {/* Sidebar */}
-          <aside className="lg:w-52 flex-shrink-0" aria-label="Filter by industry">
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#94a3b8] mb-3">Industry</p>
-            <ul className="flex flex-row flex-wrap lg:flex-col gap-2 list-none">
+          <aside className="lg:w-56 flex-shrink-0" aria-label="Filter by industry">
+            <p className="text-xs font-bold uppercase tracking-widest text-[#94a3b8] mb-3">Industry</p>
+            <ul className="flex flex-row flex-wrap lg:flex-col gap-2 list-none mb-6">
               <li>
                 <button
                   onClick={() => setIndustry('all')}
-                  className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all ${activeIndustry === 'all' ? 'bg-[#1d5fa8] text-white' : 'bg-white border border-[#e2e8f0] text-[#374151] hover:border-[#1d5fa8]/40'}`}
+                  className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                    activeIndustry === 'all'
+                      ? 'bg-[#1558a7] text-white'
+                      : 'bg-white border border-[#e2e8f0] text-[#374151] hover:border-[#1558a7]/40'
+                  }`}
                   aria-pressed={activeIndustry === 'all'}
                 >
                   All Industries
@@ -79,7 +111,11 @@ export default function ProductsPage() {
                 <li key={ind.id}>
                   <button
                     onClick={() => setIndustry(ind.id)}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all ${activeIndustry === ind.id ? 'bg-[#1d5fa8] text-white' : 'bg-white border border-[#e2e8f0] text-[#374151] hover:border-[#1d5fa8]/40'}`}
+                    className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                      activeIndustry === ind.id
+                        ? 'bg-[#1558a7] text-white'
+                        : 'bg-white border border-[#e2e8f0] text-[#374151] hover:border-[#1558a7]/40'
+                    }`}
                     aria-pressed={activeIndustry === ind.id}
                   >
                     {ind.name}
@@ -87,46 +123,137 @@ export default function ProductsPage() {
                 </li>
               ))}
             </ul>
+
+            {/* Sub-category filter — shown when an industry is selected */}
+            {activeIndustryData && (
+              <div className="hidden lg:block">
+                <p className="text-xs font-bold uppercase tracking-widest text-[#94a3b8] mb-3">Category</p>
+                <ul className="flex flex-col gap-1.5 list-none">
+                  <li>
+                    <button
+                      onClick={() => setSub('all')}
+                      className={`w-full text-left px-3 py-1.5 rounded-lg text-sm transition-all ${
+                        activeSub === 'all'
+                          ? 'font-semibold text-[#1558a7] bg-[#eff6ff]'
+                          : 'text-[#374151] hover:text-[#1558a7]'
+                      }`}
+                      aria-pressed={activeSub === 'all'}
+                    >
+                      All Categories
+                    </button>
+                  </li>
+                  {activeIndustryData.subcategories.map(sub => (
+                    <li key={sub.id}>
+                      <button
+                        onClick={() => setSub(sub.id)}
+                        className={`w-full text-left px-3 py-1.5 rounded-lg text-sm transition-all ${
+                          activeSub === sub.id
+                            ? 'font-semibold text-[#1558a7] bg-[#eff6ff]'
+                            : 'text-[#374151] hover:text-[#1558a7]'
+                        }`}
+                        aria-pressed={activeSub === sub.id}
+                      >
+                        {sub.name}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </aside>
 
-          {/* Grid */}
-          <div className="flex-1">
+          {/* Product grid */}
+          <div className="flex-1 min-w-0">
+            {/* Active breadcrumb */}
+            {(activeIndustry !== 'all' || activeSub !== 'all') && (
+              <div className="flex flex-wrap items-center gap-2 mb-5">
+                {activeIndustry !== 'all' && (
+                  <span
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border"
+                    style={{
+                      backgroundColor: activeIndustryData?.lightBg,
+                      color: activeIndustryData?.color,
+                      borderColor: activeIndustryData?.color + '40',
+                    }}
+                  >
+                    {activeIndustryData?.name}
+                    <button
+                      onClick={() => setIndustry('all')}
+                      className="ml-0.5 hover:opacity-70"
+                      aria-label="Remove industry filter"
+                    >
+                      <X size={11} />
+                    </button>
+                  </span>
+                )}
+                {activeSub !== 'all' && activeIndustryData && (
+                  <span
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#f1f5f9] text-[#374151] border border-[#e2e8f0]"
+                  >
+                    {activeIndustryData.subcategories.find(s => s.id === activeSub)?.name}
+                    <button
+                      onClick={() => setSub('all')}
+                      className="ml-0.5 hover:opacity-70"
+                      aria-label="Remove category filter"
+                    >
+                      <X size={11} />
+                    </button>
+                  </span>
+                )}
+              </div>
+            )}
+
             <p className="text-sm text-[#64748b] mb-5">
               Showing <strong className="text-[#1e293b]">{filtered.length}</strong> products
             </p>
+
             <AnimatePresence mode="wait">
               <motion.ul
-                key={activeIndustry + search}
+                key={activeIndustry + activeSub + search}
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
                 className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 list-none"
               >
-                {filtered.map((product, i) => (
-                  <motion.li
-                    key={product.name + product.industryId}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.25, delay: Math.min(i * 0.025, 0.25) }}
-                  >
-                    <article className="bg-white border border-[#e2e8f0] rounded-lg p-4 hover:border-[#1d5fa8]/30 hover:shadow-sm transition-all h-full">
-                      <span
-                        className="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold mb-3"
-                        style={{ background: '#eff6ff', color: '#1d5fa8' }}
-                      >
-                        {product.industryName}
-                      </span>
-                      <p className="text-sm font-medium text-[#1e293b] leading-snug">{product.name}</p>
-                    </article>
-                  </motion.li>
-                ))}
+                {filtered.map((product, i) => {
+                  const ind = industries.find(x => x.id === product.industryId);
+                  return (
+                    <motion.li
+                      key={product.name + product.subId}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.25, delay: Math.min(i * 0.02, 0.2) }}
+                    >
+                      <article className="bg-white border border-[#e2e8f0] rounded-lg p-4 hover:border-[#1558a7]/30 hover:shadow-sm transition-all h-full flex flex-col gap-2">
+                        <div className="flex flex-wrap gap-1.5">
+                          <span
+                            className="inline-block px-2 py-0.5 rounded-full text-[11px] font-semibold"
+                            style={{
+                              backgroundColor: ind?.lightBg ?? '#f8fafc',
+                              color: ind?.color ?? '#374151',
+                            }}
+                          >
+                            {product.industryName}
+                          </span>
+                          <span className="inline-block px-2 py-0.5 rounded-full text-[11px] font-medium bg-[#f1f5f9] text-[#64748b]">
+                            {product.subName}
+                          </span>
+                        </div>
+                        <p className="text-sm font-medium text-[#1e293b] leading-snug">{product.name}</p>
+                      </article>
+                    </motion.li>
+                  );
+                })}
               </motion.ul>
             </AnimatePresence>
+
             {filtered.length === 0 && (
               <div className="text-center py-20">
-                <p className="text-[#64748b]">No products match your search.</p>
-                <button onClick={() => { setSearch(''); setIndustry('all'); }}
-                  className="mt-3 text-sm text-[#1d5fa8] font-semibold hover:underline">
-                  Clear filters
+                <p className="text-[#64748b] mb-3">No products match your search.</p>
+                <button
+                  onClick={() => { setSearch(''); setIndustry('all'); }}
+                  className="text-sm text-[#1558a7] font-semibold hover:underline"
+                >
+                  Clear all filters
                 </button>
               </div>
             )}

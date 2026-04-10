@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Users, Award, Globe, ShieldCheck } from 'lucide-react';
+import { Users, Award, Globe, ShieldCheck, Briefcase, MapPin } from 'lucide-react';
 import HeroSection from '../components/HeroSection';
 import CtaBanner from '../components/CtaBanner';
 import CertificationsSection from '../components/CertificationsSection';
@@ -16,9 +16,39 @@ const certs = [
 ];
 
 const team = [
-  { icon: Users,  title: 'Commercial Team',    body: 'Experienced sales specialists with deep knowledge of pharmaceutical and food ingredient markets across MENA.' },
-  { icon: Award,  title: 'Technical Experts',  body: 'Application scientists and R&D advisors who help clients solve formulation challenges and meet regulatory targets.' },
-  { icon: Globe,  title: 'Regulatory Affairs', body: 'In-house regulatory team supporting product registration, dossier preparation, and market access across GCC countries.' },
+  {
+    icon: Users,
+    title: 'Commercial Team',
+    body: 'Experienced sales specialists with deep knowledge of pharmaceutical and food ingredient markets across MENA.',
+  },
+  {
+    icon: Award,
+    title: 'Technical Experts',
+    body: 'Application scientists and R&D advisors who help clients solve formulation challenges and meet regulatory targets.',
+  },
+  {
+    icon: Globe,
+    title: 'Regulatory Affairs',
+    body: 'In-house regulatory team supporting product registration, dossier preparation, and market access across GCC countries.',
+  },
+];
+
+const openRoles = [
+  {
+    title: 'Technical Sales Manager — Pharmaceuticals',
+    location: 'Dubai, UAE',
+    type: 'Full-time',
+  },
+  {
+    title: 'Regulatory Affairs Specialist',
+    location: 'Dubai, UAE',
+    type: 'Full-time',
+  },
+  {
+    title: 'Application Scientist — Food & Beverage',
+    location: 'Dubai, UAE',
+    type: 'Full-time',
+  },
 ];
 
 export default function AboutPage() {
@@ -33,14 +63,15 @@ export default function AboutPage() {
       />
 
       {/* Story & Mission */}
-      <section className="bg-white py-16 lg:py-20">
+      <section id="story" className="bg-white py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16">
             <motion.div
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ duration: 0.55 }}
             >
-              <h2 className="text-2xl lg:text-3xl font-bold text-[#0f1e35] mb-5">Our Story & Mission</h2>
+              <p className="section-label mb-3">Our Story</p>
+              <h2 className="text-2xl lg:text-3xl font-bold text-[#0f1e35] mb-5">Our Story &amp; Mission</h2>
               <div className="flex flex-col gap-4 text-sm text-[#374151] leading-relaxed">
                 <p>
                   Medist was established with a clear mission: to bridge the gap between world-class ingredient
@@ -54,23 +85,23 @@ export default function AboutPage() {
                 <p>
                   We don't simply distribute. We partner. Our team of application scientists, regulatory specialists,
                   and logistics experts work alongside your team to ensure every ingredient we supply performs exactly
-                  as required — from R&D through to full-scale production.
+                  as required — from R&amp;D through to full-scale production.
                 </p>
               </div>
             </motion.div>
 
             {/* Team & Expertise + Certs */}
-            <div className="flex flex-col gap-8">
+            <div id="team" className="flex flex-col gap-8">
               <motion.div
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.1 }}
               >
-                <h2 className="text-xl font-bold text-[#0f1e35] mb-5">Team & Expertise</h2>
+                <h2 className="text-xl font-bold text-[#0f1e35] mb-5">Team &amp; Expertise</h2>
                 <div className="flex flex-col gap-4">
                   {team.map(({ icon: Icon, title, body }) => (
                     <div key={title} className="flex items-start gap-3">
                       <div className="w-9 h-9 rounded-lg bg-[#eff6ff] flex items-center justify-center flex-shrink-0" aria-hidden="true">
-                        <Icon size={16} className="text-[#1d5fa8]" />
+                        <Icon size={16} className="text-[#1558a7]" />
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-[#0f1e35] mb-0.5">{title}</p>
@@ -81,18 +112,19 @@ export default function AboutPage() {
                 </div>
               </motion.div>
 
-              {/* Certifications */}
+              {/* Certifications box */}
               <motion.div
+                id="certs"
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.15 }}
-                className="bg-[#f8fafc] border border-[#e2e8f0] rounded-lg p-6"
+                className="bg-[#f8fafc] border border-[#e2e8f0] rounded-xl p-6"
               >
-                <h3 className="text-base font-semibold text-[#0f1e35] mb-4">Certifications &amp; Compliance</h3>
+                <h3 className="text-sm font-semibold text-[#0f1e35] mb-4">Certifications &amp; Compliance</h3>
                 <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
                   {certs.map(({ icon: Icon, label }) => (
                     <div key={label} className="flex flex-col items-center gap-2 text-center">
-                      <div className="w-11 h-11 rounded-full border-2 border-[#1d5fa8] flex items-center justify-center">
-                        <Icon size={14} className="text-[#1d5fa8]" aria-hidden="true" />
+                      <div className="w-11 h-11 rounded-full border-2 border-[#1558a7] flex items-center justify-center">
+                        <Icon size={14} className="text-[#1558a7]" aria-hidden="true" />
                       </div>
                       <span className="text-xs font-semibold text-[#374151]">{label}</span>
                     </div>
@@ -105,10 +137,17 @@ export default function AboutPage() {
       </section>
 
       {/* Geographic Coverage */}
-      <section className="bg-[#f8fafc] border-y border-[#e2e8f0] py-14">
+      <section id="coverage" className="bg-[#f8fafc] border-y border-[#e2e8f0] py-14">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+          <motion.p
+            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
+            viewport={{ once: true }} transition={{ duration: 0.4 }}
+            className="section-label mb-2"
+          >
+            Where We Operate
+          </motion.p>
           <motion.h2
-            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.5 }}
             className="text-2xl font-bold text-[#0f1e35] mb-3"
           >
@@ -125,10 +164,11 @@ export default function AboutPage() {
           <motion.div
             initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
             viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.15 }}
-            className="flex flex-wrap items-center justify-center gap-4"
+            className="flex flex-wrap items-center justify-center gap-3"
           >
             {regions.map(r => (
-              <span key={r} className="px-4 py-2 bg-white border border-[#e2e8f0] rounded-full text-sm font-medium text-[#374151]">
+              <span key={r} className="px-4 py-2 bg-white border border-[#e2e8f0] rounded-full text-sm font-medium text-[#374151] flex items-center gap-1.5">
+                <MapPin size={12} className="text-[#1558a7]" aria-hidden="true" />
                 {r}
               </span>
             ))}
@@ -136,17 +176,16 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Company Overview embed placeholder */}
+      {/* Company Overview */}
       <section className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
           <motion.h2
-            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.5 }}
             className="text-2xl font-bold text-[#0f1e35] mb-6"
           >
             Company Overview
           </motion.h2>
-          {/* Video / embed placeholder */}
           <div className="mx-auto max-w-2xl bg-[#f8fafc] border border-[#e2e8f0] rounded-xl flex items-center justify-center h-56">
             <p className="text-sm text-[#94a3b8]">Company video coming soon</p>
           </div>
@@ -154,6 +193,64 @@ export default function AboutPage() {
       </section>
 
       <CertificationsSection />
+
+      {/* Careers */}
+      <section id="careers" className="bg-[#f8fafc] border-t border-[#e2e8f0] py-16 lg:py-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.5 }}
+            className="mb-10"
+          >
+            <p className="section-label mb-2">Join Our Team</p>
+            <h2 className="text-2xl lg:text-3xl font-bold text-[#0f1e35] mb-3">Careers at Medist</h2>
+            <p className="text-sm text-[#64748b] max-w-lg">
+              We're growing across the MENA region and looking for talented professionals who share our
+              commitment to quality, compliance, and partnership.
+            </p>
+          </motion.div>
+
+          <div className="flex flex-col gap-4 mb-10">
+            {openRoles.map(({ title, location, type }, i) => (
+              <motion.div
+                key={title}
+                initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.08 }}
+                className="bg-white border border-[#e2e8f0] rounded-xl p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 card-hover"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-lg bg-[#eff6ff] flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                    <Briefcase size={18} className="text-[#1558a7]" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-[#0f1e35]">{title}</p>
+                    <p className="text-xs text-[#64748b] mt-0.5">{location} · {type}</p>
+                  </div>
+                </div>
+                <a
+                  href={`/contact?type=partner`}
+                  className="btn-ghost-blue px-4 py-2 text-xs flex-shrink-0 inline-flex items-center gap-1.5"
+                >
+                  Apply Now
+                </a>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
+            viewport={{ once: true }} transition={{ duration: 0.4 }}
+            className="text-sm text-[#64748b]"
+          >
+            Don't see a suitable role?{' '}
+            <a href="/contact" className="text-[#1558a7] font-semibold hover:underline">
+              Send us your CV
+            </a>{' '}
+            and we'll keep it on file for future opportunities.
+          </motion.p>
+        </div>
+      </section>
+
       <CtaBanner />
     </main>
   );
