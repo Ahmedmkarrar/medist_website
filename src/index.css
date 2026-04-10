@@ -1,0 +1,208 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy:       #0D1F3C;
+  --color-navy-dark:  #071228;
+  --color-navy-mid:   #0F2847;
+  --color-navy-light: #1A3055;
+  --color-teal:       #0A8C7A;
+  --color-teal-light: #0DB89E;
+  --color-teal-dark:  #076E5F;
+  --color-gold:       #C9A84C;
+  --color-gold-light: #E8C96A;
+  --color-muted:      #8A9BB0;
+  --color-off-white:  #F7F9FC;
+
+  --font-sans:    'Inter', system-ui, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+}
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #ffffff;
+    color: #0D1F3C;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ─── TYPOGRAPHY ─── */
+.font-display { font-family: 'Playfair Display', Georgia, serif; }
+
+/* ─── HERO GRADIENT ─── */
+.hero-gradient {
+  background: linear-gradient(135deg, #040D1A 0%, #071228 40%, #0A1F38 70%, #082030 100%);
+}
+
+/* ─── DOT GRID PATTERN ─── */
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(10,140,122,0.18) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ─── GLASSMORPHISM NAV ─── */
+.glass-nav {
+  background: rgba(7, 18, 40, 0.75);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.glass-nav-light {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border-bottom: 1px solid rgba(13,31,60,0.08);
+  box-shadow: 0 2px 24px rgba(0,0,0,0.07);
+}
+
+/* ─── SUPPLIER MARQUEE ─── */
+@keyframes marquee-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 38s linear infinite;
+  will-change: transform;
+}
+
+.marquee-wrapper:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ─── NAV LINK UNDERLINE ─── */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -3px; left: 0;
+  width: 0; height: 2px;
+  background: #0DB89E;
+  border-radius: 2px;
+  transition: width 0.25s ease;
+}
+.nav-link:hover::after,
+.nav-link.active::after { width: 100%; }
+
+/* ─── CTA DIAGONAL STRIPE ─── */
+.diagonal-stripe {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent, transparent 24px,
+    rgba(255,255,255,0.025) 24px,
+    rgba(255,255,255,0.025) 48px
+  );
+}
+
+/* ─── INDUSTRY CARD ─── */
+.industry-card {
+  border-left: 3px solid transparent;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.industry-card:hover {
+  box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+  transform: translateY(-4px);
+}
+
+/* ─── GRADIENT TEXT ─── */
+.gradient-text-teal {
+  background: linear-gradient(135deg, #0DB89E 0%, #0A8C7A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-gold {
+  background: linear-gradient(135deg, #E8C96A 0%, #C9A84C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── GLOWING TEAL BUTTON ─── */
+.btn-teal {
+  background: linear-gradient(135deg, #0DB89E 0%, #0A8C7A 100%);
+  box-shadow: 0 4px 24px rgba(10,140,122,0.35);
+  transition: box-shadow 0.2s, transform 0.15s, filter 0.2s;
+}
+.btn-teal:hover {
+  box-shadow: 0 6px 32px rgba(10,140,122,0.5);
+  filter: brightness(1.08);
+  transform: translateY(-1px) scale(1.02);
+}
+.btn-teal:active { transform: scale(0.97); }
+
+/* ─── SHIMMER on logo cards ─── */
+.logo-card {
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.logo-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.25) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+.logo-card:hover::after { transform: translateX(100%); }
+.logo-card:hover {
+  border-color: rgba(10,140,122,0.35) !important;
+  box-shadow: 0 6px 24px rgba(10,140,122,0.10);
+  transform: translateY(-2px);
+}
+
+/* ─── PROCESS TIMELINE ─── */
+.process-line::before {
+  content: '';
+  position: absolute;
+  top: 24px; left: calc(50% - 1px);
+  width: 2px; height: 100%;
+  background: linear-gradient(to bottom, #0A8C7A, rgba(10,140,122,0.1));
+}
+
+/* ─── WHATSAPP FLOAT ─── */
+.whatsapp-float {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  z-index: 50;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: #25D366;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.45);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.whatsapp-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 28px rgba(37,211,102,0.6);
+}
+
+/* ─── CERT BADGE ─── */
+.cert-badge {
+  background: rgba(10,140,122,0.06);
+  border: 1px solid rgba(10,140,122,0.18);
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.cert-badge:hover {
+  background: rgba(10,140,122,0.12);
+  border-color: rgba(10,140,122,0.4);
+  transform: translateY(-2px);
+}
