@@ -1,305 +1,184 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Phone, Mail, CheckCircle, AlertCircle } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, CheckCircle, AlertCircle } from 'lucide-react';
 import { industries } from '../data/industries';
+import CertificationsSection from '../components/CertificationsSection';
 
 interface FormValues {
-  fullName: string;
-  company: string;
-  email: string;
-  phone: string;
-  industry: string;
-  message: string;
+  fullName: string; company: string; country: string;
+  email: string; phone: string; inquiryType: string; message: string;
 }
+interface FormErrors { [key: string]: string | undefined }
 
-interface FormErrors {
-  fullName?: string;
-  company?: string;
-  email?: string;
-  phone?: string;
-  industry?: string;
-  message?: string;
-}
+const empty: FormValues = { fullName: '', company: '', country: '', email: '', phone: '', inquiryType: '', message: '' };
 
-const empty: FormValues = {
-  fullName: '',
-  company: '',
-  email: '',
-  phone: '',
-  industry: '',
-  message: '',
-};
-
-function validate(values: FormValues): FormErrors {
-  const errors: FormErrors = {};
-  if (!values.fullName.trim()) errors.fullName = 'Full name is required.';
-  if (!values.company.trim()) errors.company = 'Company name is required.';
-  if (!values.email.trim()) {
-    errors.email = 'Email address is required.';
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
-    errors.email = 'Please enter a valid email address.';
-  }
-  if (!values.phone.trim()) errors.phone = 'Phone number is required.';
-  if (!values.industry) errors.industry = 'Please select an industry.';
-  if (!values.message.trim()) errors.message = 'Message is required.';
-  else if (values.message.trim().length < 20) errors.message = 'Please provide a little more detail (min 20 characters).';
-  return errors;
+function validate(v: FormValues): FormErrors {
+  const e: FormErrors = {};
+  if (!v.fullName.trim())  e.fullName  = 'Required';
+  if (!v.company.trim())   e.company   = 'Required';
+  if (!v.country.trim())   e.country   = 'Required';
+  if (!v.email.trim())     e.email     = 'Required';
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email)) e.email = 'Invalid email';
+  if (!v.phone.trim())     e.phone     = 'Required';
+  if (!v.inquiryType)      e.inquiryType = 'Please select';
+  if (!v.message.trim())   e.message   = 'Required';
+  return e;
 }
 
 export default function ContactPage() {
-  const [values, setValues] = useState<FormValues>(empty);
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [touched, setTouched] = useState<Partial<Record<keyof FormValues, boolean>>>({});
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [values, setValues]   = useState<FormValues>(empty);
+  const [errors, setErrors]   = useState<FormErrors>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [status, setStatus]   = useState<'idle' | 'submitting' | 'success'>('idle');
 
-  useEffect(() => {
-    window.scrollTo({ top: 0 });
-  }, []);
+  useEffect(() => { window.scrollTo({ top: 0 }); }, []);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     const { name, value } = e.target;
-    setValues(prev => ({ ...prev, [name]: value }));
-    if (touched[name as keyof FormValues]) {
-      setErrors(validate({ ...values, [name]: value }));
-    }
+    const next = { ...values, [name]: value };
+    setValues(next);
+    if (touched[name]) setErrors(validate(next));
   }
 
   function handleBlur(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
-    const { name } = e.target;
-    setTouched(prev => ({ ...prev, [name]: true }));
+    setTouched(t => ({ ...t, [e.target.name]: true }));
     setErrors(validate(values));
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const allTouched = Object.keys(empty).reduce(
-      (acc, k) => ({ ...acc, [k]: true }),
-      {} as Record<keyof FormValues, boolean>
-    );
+    const allTouched = Object.keys(empty).reduce((a, k) => ({ ...a, [k]: true }), {});
     setTouched(allTouched);
     const errs = validate(values);
     setErrors(errs);
-    if (Object.keys(errs).length > 0) return;
-
+    if (Object.keys(errs).length) return;
     setStatus('submitting');
-    // Simulate async submit
     await new Promise(r => setTimeout(r, 1200));
     setStatus('success');
     setValues(empty);
     setTouched({});
   }
 
+  const inputClass = (name: string) =>
+    `w-full px-3 py-2.5 text-sm border rounded-md bg-white text-[#1e293b] placeholder:text-[#94a3b8] focus:outline-none focus:ring-2 transition ${
+      touched[name] && errors[name]
+        ? 'border-red-400 focus:ring-red-200'
+        : 'border-[#e2e8f0] focus:ring-[#1d5fa8]/25 focus:border-[#1d5fa8]'
+    }`;
+
   return (
-    <main id="main-content" className="min-h-screen bg-[#F7F9FC]">
+    <main id="main-content" className="bg-white">
       {/* Page header */}
-      <div className="bg-[#071228] pt-28 pb-14">
+      <div className="pt-20 pb-12 border-b border-[#e2e8f0]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl lg:text-5xl font-bold text-white mb-4"
+            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-3xl lg:text-4xl font-bold text-[#0f1e35] mb-2"
           >
-            Let's Talk Ingredients
+            Contact Us
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-[#8A9BB0] text-lg max-w-xl"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="text-[#64748b] text-base"
           >
-            Whether you're looking for a specific ingredient or need formulation support,
-            our team is ready to help.
+            Get in touch with our team for product inquiries, sample requests, or partnering opportunities.
           </motion.p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
-        <div className="grid lg:grid-cols-2 gap-14 items-start">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-14">
+        <div className="grid lg:grid-cols-[300px_1fr] gap-12">
 
-          {/* Left — contact info */}
+          {/* Left — office info */}
           <motion.div
-            initial={{ opacity: 0, x: -24 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.65 }}
+            initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
           >
-            <h2 className="text-2xl font-bold text-[#0D1F3C] mb-4">Get in Touch</h2>
-            <p className="text-[#8A9BB0] text-base leading-relaxed mb-10">
-              Reach out to our ingredient specialists for product enquiries, samples,
-              pricing, or technical support. We typically respond within one business day.
-            </p>
-
-            <address className="not-italic flex flex-col gap-6 mb-10">
-              <div className="flex items-start gap-4">
-                <div className="w-11 h-11 rounded-xl bg-[#0A8C7A]/10 flex items-center justify-center flex-shrink-0">
-                  <MapPin size={20} className="text-[#0A8C7A]" aria-hidden="true" />
-                </div>
+            <h2 className="text-base font-semibold text-[#0f1e35] mb-6">Our Office</h2>
+            <address className="not-italic flex flex-col gap-5">
+              <div className="flex items-start gap-3">
+                <MapPin size={16} className="text-[#1d5fa8] mt-0.5 flex-shrink-0" aria-hidden="true" />
                 <div>
-                  <p className="font-semibold text-[#0D1F3C] text-sm mb-0.5">Address</p>
-                  <p className="text-[#8A9BB0] text-sm leading-relaxed">Medist HQ, Dubai, UAE</p>
+                  <p className="text-sm text-[#374151]">Business Bay, Dubai</p>
+                  <p className="text-sm text-[#374151]">United Arab Emirates</p>
                 </div>
               </div>
-
-              <div className="flex items-start gap-4">
-                <div className="w-11 h-11 rounded-xl bg-[#0A8C7A]/10 flex items-center justify-center flex-shrink-0">
-                  <Phone size={20} className="text-[#0A8C7A]" aria-hidden="true" />
-                </div>
-                <div>
-                  <p className="font-semibold text-[#0D1F3C] text-sm mb-0.5">Phone</p>
-                  <a href="tel:+971000000000" className="text-[#8A9BB0] text-sm hover:text-[#0A8C7A] transition-colors">
-                    +971 00 000 0000
-                  </a>
-                </div>
+              <div className="flex items-center gap-3">
+                <Phone size={16} className="text-[#1d5fa8] flex-shrink-0" aria-hidden="true" />
+                <a href="tel:+971000000000" className="text-sm text-[#374151] hover:text-[#1d5fa8] transition-colors">
+                  +971 0 000 0000
+                </a>
               </div>
-
-              <div className="flex items-start gap-4">
-                <div className="w-11 h-11 rounded-xl bg-[#0A8C7A]/10 flex items-center justify-center flex-shrink-0">
-                  <Mail size={20} className="text-[#0A8C7A]" aria-hidden="true" />
-                </div>
+              <div className="flex items-center gap-3">
+                <Mail size={16} className="text-[#1d5fa8] flex-shrink-0" aria-hidden="true" />
+                <a href="mailto:info@medist.ae" className="text-sm text-[#374151] hover:text-[#1d5fa8] transition-colors">
+                  info@medist.ae
+                </a>
+              </div>
+              <div className="flex items-start gap-3">
+                <Clock size={16} className="text-[#1d5fa8] mt-0.5 flex-shrink-0" aria-hidden="true" />
                 <div>
-                  <p className="font-semibold text-[#0D1F3C] text-sm mb-0.5">Email</p>
-                  <a href="mailto:info@medist.com" className="text-[#8A9BB0] text-sm hover:text-[#0A8C7A] transition-colors">
-                    info@medist.com
-                  </a>
+                  <p className="text-sm text-[#374151]">Sunday – Thursday</p>
+                  <p className="text-sm text-[#64748b]">8:00 AM – 5:00 PM (GST)</p>
                 </div>
               </div>
             </address>
-
-            {/* Map placeholder */}
-            <div className="rounded-2xl overflow-hidden border border-gray-200 h-56 bg-gray-100 flex flex-col items-center justify-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#0A8C7A]/15 flex items-center justify-center">
-                <MapPin size={20} className="text-[#0A8C7A]" aria-hidden="true" />
-              </div>
-              <p className="text-[#8A9BB0] text-sm">Map coming soon</p>
-              <a
-                href="https://maps.google.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#0A8C7A] text-sm font-semibold hover:underline"
-              >
-                View on Google Maps →
-              </a>
-            </div>
           </motion.div>
 
           {/* Right — form */}
           <motion.div
-            initial={{ opacity: 0, x: 24 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.65, delay: 0.1 }}
-            className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm"
+            initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <h2 className="text-xl font-bold text-[#0D1F3C] mb-6">Send an Enquiry</h2>
-
             <form onSubmit={handleSubmit} noValidate aria-label="Contact form">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
-                <Field
-                  label="Full Name"
-                  id="fullName"
-                  name="fullName"
-                  type="text"
-                  placeholder="Ahmed Al-Hassan"
-                  value={values.fullName}
-                  error={touched.fullName ? errors.fullName : undefined}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                <Field
-                  label="Company Name"
-                  id="company"
-                  name="company"
-                  type="text"
-                  placeholder="Acme Foods LLC"
-                  value={values.company}
-                  error={touched.company ? errors.company : undefined}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                <Field
-                  label="Email Address"
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="ahmed@company.com"
-                  value={values.email}
-                  error={touched.email ? errors.email : undefined}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                <Field
-                  label="Phone Number"
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  placeholder="+971 50 123 4567"
-                  value={values.phone}
-                  error={touched.phone ? errors.phone : undefined}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              </div>
+                <Field label="Full Name *"     name="fullName"  type="text"  value={values.fullName}  error={touched.fullName  ? errors.fullName  : undefined} className={inputClass('fullName')}  onChange={handleChange} onBlur={handleBlur} placeholder="John Smith" />
+                <Field label="Company Name"    name="company"   type="text"  value={values.company}   error={touched.company   ? errors.company   : undefined} className={inputClass('company')}   onChange={handleChange} onBlur={handleBlur} placeholder="Acme Pharma LLC" />
+                <Field label="Country *"       name="country"   type="text"  value={values.country}   error={touched.country   ? errors.country   : undefined} className={inputClass('country')}   onChange={handleChange} onBlur={handleBlur} placeholder="UAE" />
+                <Field label="Email *"         name="email"     type="email" value={values.email}     error={touched.email     ? errors.email     : undefined} className={inputClass('email')}     onChange={handleChange} onBlur={handleBlur} placeholder="john@company.com" />
+                <Field label="Phone"           name="phone"     type="tel"   value={values.phone}     error={touched.phone     ? errors.phone     : undefined} className={inputClass('phone')}     onChange={handleChange} onBlur={handleBlur} placeholder="+971 50 000 0000" />
 
-              {/* Industry dropdown */}
-              <div className="mb-5">
-                <label htmlFor="industry" className="block text-sm font-semibold text-[#0D1F3C] mb-1.5">
-                  Industry <span className="text-red-500" aria-hidden="true">*</span>
-                </label>
-                <select
-                  id="industry"
-                  name="industry"
-                  value={values.industry}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  required
-                  aria-required="true"
-                  aria-invalid={touched.industry && !!errors.industry}
-                  aria-describedby={touched.industry && errors.industry ? 'industry-error' : undefined}
-                  className={`w-full px-4 py-3 rounded-xl border text-sm bg-white text-[#0D1F3C] focus:outline-none focus:ring-2 transition appearance-none ${
-                    touched.industry && errors.industry
-                      ? 'border-red-400 focus:ring-red-300'
-                      : 'border-gray-200 focus:ring-[#0A8C7A]/40 focus:border-[#0A8C7A]'
-                  }`}
-                >
-                  <option value="">Select your industry</option>
-                  {industries.map((ind) => (
-                    <option key={ind.id} value={ind.id}>
-                      {ind.name}
-                    </option>
-                  ))}
-                </select>
-                {touched.industry && errors.industry && (
-                  <p id="industry-error" className="mt-1.5 text-xs text-red-500 flex items-center gap-1">
-                    <AlertCircle size={12} aria-hidden="true" /> {errors.industry}
-                  </p>
-                )}
+                {/* Inquiry Type */}
+                <div>
+                  <label htmlFor="inquiryType" className="block text-xs font-semibold text-[#374151] mb-1.5">
+                    Inquiry Type *
+                  </label>
+                  <select
+                    id="inquiryType" name="inquiryType"
+                    value={values.inquiryType}
+                    onChange={handleChange} onBlur={handleBlur}
+                    className={inputClass('inquiryType')}
+                    aria-invalid={touched.inquiryType && !!errors.inquiryType}
+                  >
+                    <option value="">Select...</option>
+                    {industries.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
+                    <option value="general">General Enquiry</option>
+                    <option value="partnership">Partnership</option>
+                  </select>
+                  {touched.inquiryType && errors.inquiryType && (
+                    <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
+                      <AlertCircle size={11} aria-hidden="true" />{errors.inquiryType}
+                    </p>
+                  )}
+                </div>
               </div>
 
               {/* Message */}
               <div className="mb-6">
-                <label htmlFor="message" className="block text-sm font-semibold text-[#0D1F3C] mb-1.5">
-                  Message <span className="text-red-500" aria-hidden="true">*</span>
-                </label>
+                <label htmlFor="message" className="block text-xs font-semibold text-[#374151] mb-1.5">Message *</label>
                 <textarea
-                  id="message"
-                  name="message"
-                  rows={5}
-                  placeholder="Tell us about your ingredient requirements, quantities, or any questions..."
+                  id="message" name="message" rows={5}
                   value={values.message}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  required
-                  aria-required="true"
+                  onChange={handleChange} onBlur={handleBlur}
+                  placeholder="Tell us about your requirements..."
+                  className={inputClass('message') + ' resize-none'}
                   aria-invalid={touched.message && !!errors.message}
-                  aria-describedby={touched.message && errors.message ? 'message-error' : undefined}
-                  className={`w-full px-4 py-3 rounded-xl border text-sm text-[#0D1F3C] placeholder:text-[#8A9BB0] focus:outline-none focus:ring-2 transition resize-none ${
-                    touched.message && errors.message
-                      ? 'border-red-400 focus:ring-red-300'
-                      : 'border-gray-200 focus:ring-[#0A8C7A]/40 focus:border-[#0A8C7A]'
-                  }`}
                 />
                 {touched.message && errors.message && (
-                  <p id="message-error" className="mt-1.5 text-xs text-red-500 flex items-center gap-1">
-                    <AlertCircle size={12} aria-hidden="true" /> {errors.message}
+                  <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
+                    <AlertCircle size={11} aria-hidden="true" />{errors.message}
                   </p>
                 )}
               </div>
@@ -307,41 +186,22 @@ export default function ContactPage() {
               <button
                 type="submit"
                 disabled={status === 'submitting'}
-                className="w-full py-3.5 bg-[#0A8C7A] hover:bg-[#076E5F] disabled:opacity-60 text-white font-semibold rounded-full transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                className="btn-primary px-8 py-3 text-sm disabled:opacity-60"
               >
-                {status === 'submitting' ? 'Sending…' : 'Send Enquiry'}
+                {status === 'submitting' ? 'Sending…' : 'Submit Inquiry'}
               </button>
             </form>
 
-            {/* Toast notifications */}
             <AnimatePresence>
               {status === 'success' && (
                 <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 12 }}
-                  className="mt-5 flex items-center gap-3 p-4 bg-green-50 border border-green-200 rounded-xl"
-                  role="status"
-                  aria-live="polite"
+                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                  className="mt-5 flex items-center gap-3 p-4 bg-green-50 border border-green-200 rounded-lg"
+                  role="status" aria-live="polite"
                 >
-                  <CheckCircle size={20} className="text-green-600 flex-shrink-0" aria-hidden="true" />
-                  <p className="text-green-800 text-sm font-medium">
-                    Your enquiry has been sent! We'll be in touch within one business day.
-                  </p>
-                </motion.div>
-              )}
-              {status === 'error' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 12 }}
-                  className="mt-5 flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-xl"
-                  role="alert"
-                  aria-live="assertive"
-                >
-                  <AlertCircle size={20} className="text-red-500 flex-shrink-0" aria-hidden="true" />
-                  <p className="text-red-700 text-sm font-medium">
-                    Something went wrong. Please try again or email us directly at info@medist.com
+                  <CheckCircle size={18} className="text-green-600 flex-shrink-0" aria-hidden="true" />
+                  <p className="text-sm text-green-800 font-medium">
+                    Your inquiry has been sent. We'll respond within one business day.
                   </p>
                 </motion.div>
               )}
@@ -349,49 +209,26 @@ export default function ContactPage() {
           </motion.div>
         </div>
       </div>
+
+      <CertificationsSection />
     </main>
   );
 }
 
-interface FieldProps {
-  label: string;
-  id: string;
-  name: string;
-  type: string;
-  placeholder: string;
-  value: string;
-  error?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
-}
-
-function Field({ label, id, name, type, placeholder, value, error, onChange, onBlur }: FieldProps) {
+function Field({ label, name, type, value, error, className, onChange, onBlur, placeholder }: {
+  label: string; name: string; type: string; value: string; error?: string;
+  className: string; placeholder: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onBlur: React.FocusEventHandler<HTMLInputElement>;
+}) {
   return (
     <div>
-      <label htmlFor={id} className="block text-sm font-semibold text-[#0D1F3C] mb-1.5">
-        {label} <span className="text-red-500" aria-hidden="true">*</span>
-      </label>
-      <input
-        id={id}
-        name={name}
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        onBlur={onBlur}
-        required
-        aria-required="true"
-        aria-invalid={!!error}
-        aria-describedby={error ? `${id}-error` : undefined}
-        className={`w-full px-4 py-3 rounded-xl border text-sm text-[#0D1F3C] placeholder:text-[#8A9BB0] focus:outline-none focus:ring-2 transition ${
-          error
-            ? 'border-red-400 focus:ring-red-300'
-            : 'border-gray-200 focus:ring-[#0A8C7A]/40 focus:border-[#0A8C7A]'
-        }`}
-      />
+      <label htmlFor={name} className="block text-xs font-semibold text-[#374151] mb-1.5">{label}</label>
+      <input id={name} name={name} type={type} value={value} onChange={onChange} onBlur={onBlur}
+        placeholder={placeholder} className={className} aria-invalid={!!error} />
       {error && (
-        <p id={`${id}-error`} className="mt-1.5 text-xs text-red-500 flex items-center gap-1">
-          <AlertCircle size={12} aria-hidden="true" /> {error}
+        <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
+          <AlertCircle size={11} aria-hidden="true" />{error}
         </p>
       )}
     </div>

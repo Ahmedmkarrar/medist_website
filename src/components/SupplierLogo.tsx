@@ -1,35 +1,25 @@
 import { useState } from 'react';
 import type { Supplier } from '../data/suppliers';
 
-interface SupplierLogoProps {
-  supplier: Supplier;
-}
-
-export default function SupplierLogo({ supplier }: SupplierLogoProps) {
+export default function SupplierLogo({ supplier }: { supplier: Supplier }) {
   const [imgError, setImgError] = useState(false);
   const hasLogo = !!supplier.logo && !imgError;
 
   return (
-    <a
-      href={supplier.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="logo-card flex-shrink-0 w-44 h-[84px] bg-white border border-gray-200 rounded-xl flex items-center justify-center mx-3"
-      aria-label={`${supplier.name} — visit website`}
-    >
+    <div className="flex-shrink-0 w-36 h-16 bg-white border border-[#e2e8f0] rounded-lg flex items-center justify-center mx-3 hover:border-[#1d5fa8]/30 hover:shadow-sm transition-all">
       {hasLogo ? (
         <img
           src={supplier.logo}
           alt={supplier.name}
           onError={() => setImgError(true)}
-          className="max-w-[130px] max-h-[56px] object-contain"
+          className="max-w-[110px] max-h-[48px] object-contain"
           loading="lazy"
         />
       ) : (
-        <span className="text-[#0D1F3C] font-bold text-sm text-center px-4 leading-tight select-none">
+        <span className="text-[#374151] font-semibold text-xs text-center px-3 leading-tight">
           {supplier.name}
         </span>
       )}
-    </a>
+    </div>
   );
 }

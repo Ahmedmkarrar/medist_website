@@ -1,188 +1,140 @@
-import { motion, type Variants } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ChevronDown, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
-const stagger: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.13 } },
-};
-
-const fadeUp: Variants = {
-  hidden:  { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.75, ease: 'easeOut' as const } },
-};
-
-const floatAnim: Variants = {
-  animate: {
-    y: [0, -16, 0],
-    transition: { duration: 6, repeat: Infinity, ease: 'easeInOut' as const },
-  },
-};
-
-const industries = ['Bakery', 'Confectionery', 'Dairy', 'Beverages', 'Snacks', 'Culinary', 'Meat'];
-
-export default function HeroSection() {
-  return (
-    <section className="hero-gradient min-h-screen relative flex flex-col justify-center overflow-hidden" aria-label="Hero">
-      {/* Dot grid overlay */}
-      <div className="dot-grid absolute inset-0 pointer-events-none" aria-hidden="true" />
-
-      {/* Radial glow accents */}
-      <div className="absolute top-0 right-0 w-[700px] h-[700px] rounded-full pointer-events-none opacity-20"
-        style={{ background: 'radial-gradient(circle at 70% 30%, #0A8C7A, transparent 65%)' }}
-        aria-hidden="true" />
-      <div className="absolute bottom-0 left-[-100px] w-[500px] h-[500px] rounded-full pointer-events-none opacity-10"
-        style={{ background: 'radial-gradient(circle, #C9A84C, transparent 65%)' }}
-        aria-hidden="true" />
-
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-10 pt-28 pb-20 lg:pt-36 lg:pb-24 w-full">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-
-          {/* ── LEFT ── */}
-          <motion.div variants={stagger} initial="hidden" animate="visible">
-            {/* Pill badge */}
-            <motion.div variants={fadeUp}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8"
-              style={{ background: 'rgba(10,140,122,0.12)', border: '1px solid rgba(13,184,158,0.3)' }}
-            >
-              <span className="w-2 h-2 rounded-full bg-[#0DB89E] animate-pulse" aria-hidden="true" />
-              <span className="text-[#0DB89E] text-xs font-semibold uppercase tracking-widest">
-                Trusted Ingredient Partner — Middle East & Beyond
-              </span>
-            </motion.div>
-
-            {/* Headline */}
-            <motion.h1 variants={fadeUp}
-              className="text-[2.75rem] sm:text-5xl lg:text-[3.5rem] xl:text-6xl leading-[1.08] tracking-tight mb-6"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              <span className="text-white">Premium Raw</span>{' '}
-              <span className="gradient-text-teal">Ingredients</span>
-              <br />
-              <span className="text-white">Delivered with</span>{' '}
-              <span className="gradient-text-gold">Precision</span>
-            </motion.h1>
-
-            <motion.p variants={fadeUp}
-              className="text-[#8A9BB0] text-lg leading-relaxed mb-10 max-w-[520px]"
-            >
-              Medist is your trusted partner for sourcing the finest raw ingredients and
-              materials for the Pharmaceutical, Food &amp; Beverage, and Personal Care
-              industries across the Middle East and beyond.
-            </motion.p>
-
-            {/* CTAs */}
-            <motion.div variants={fadeUp} className="flex flex-wrap gap-4 mb-10">
-              <Link to="/products" className="btn-teal inline-flex items-center gap-2 px-7 py-3.5 text-white font-semibold rounded-full text-sm">
-                Explore Our Products
-                <ArrowRight size={16} />
-              </Link>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 px-7 py-3.5 border border-white/25 hover:border-white/50 text-white font-semibold rounded-full text-sm transition-all duration-200 hover:bg-white/6 active:scale-[0.97]"
-              >
-                Get in Touch
-              </Link>
-            </motion.div>
-
-            {/* Industry tags */}
-            <motion.div variants={fadeUp} className="flex flex-wrap gap-2">
-              {industries.map(ind => (
-                <span
-                  key={ind}
-                  className="px-3 py-1 rounded-full text-xs font-medium text-[#8A9BB0]"
-                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
-                >
-                  {ind}
-                </span>
-              ))}
-            </motion.div>
-          </motion.div>
-
-          {/* ── RIGHT — Molecular illustration ── */}
-          <motion.div
-            variants={floatAnim}
-            animate="animate"
-            className="hidden lg:flex items-center justify-center"
-            aria-hidden="true"
-          >
-            <MolecularSVG />
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5" aria-hidden="true">
-        <span className="text-white/30 text-[10px] tracking-[0.2em] uppercase">Scroll</span>
-        <motion.div
-          animate={{ y: [0, 7, 0] }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          <ChevronDown size={18} className="text-white/30" />
-        </motion.div>
-      </div>
-    </section>
-  );
+interface HeroSectionProps {
+  title: string;
+  subtitle: string;
+  primaryCta?: { label: string; to: string };
+  secondaryCta?: { label: string; to: string };
+  bgImage?: string;
+  badge?: string;
+  showStats?: boolean;
 }
 
-function MolecularSVG() {
+const stats = [
+  { value: '20+', label: 'Years Experience' },
+  { value: '500+', label: 'Products' },
+  { value: '50+', label: 'Global Suppliers' },
+  { value: '30+', label: 'Countries Served' },
+];
+
+const fadeUp = {
+  hidden:  { opacity: 0, y: 28 },
+  visible: (i: number) => ({
+    opacity: 1, y: 0,
+    transition: { duration: 0.65, delay: i * 0.1, ease: 'easeOut' as const },
+  }),
+};
+
+export default function HeroSection({
+  title,
+  subtitle,
+  primaryCta,
+  secondaryCta,
+  bgImage,
+  badge,
+  showStats = false,
+}: HeroSectionProps) {
   return (
-    <svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Outer dashed rings */}
-      <circle cx="250" cy="250" r="220" stroke="#0A8C7A" strokeWidth="1" strokeDasharray="10 7" opacity="0.2" />
-      <circle cx="250" cy="250" r="170" stroke="#C9A84C" strokeWidth="0.8" strokeDasharray="6 10" opacity="0.18" />
-      <circle cx="250" cy="250" r="120" stroke="#0A8C7A" strokeWidth="0.6" strokeDasharray="4 8" opacity="0.15" />
+    <section className="hero-photo relative" style={{ minHeight: showStats ? '560px' : '420px' }} aria-label="Page hero">
+      {/* Background */}
+      {bgImage ? (
+        <div
+          className="hero-photo-bg"
+          style={{ backgroundImage: `url(${bgImage})` }}
+          aria-hidden="true"
+        />
+      ) : (
+        <div
+          className="hero-photo-bg"
+          style={{
+            background: 'linear-gradient(135deg, #060e1c 0%, #0a1830 40%, #0e2240 70%, #0c1e3a 100%)',
+          }}
+          aria-hidden="true"
+        />
+      )}
 
-      {/* Core glow */}
-      <circle cx="250" cy="250" r="60" fill="#0A8C7A" opacity="0.08" />
-      <circle cx="250" cy="250" r="38" fill="#0A8C7A" opacity="0.15" />
-      <circle cx="250" cy="250" r="20" fill="#0DB89E" opacity="0.85" />
+      {/* Grid pattern overlay */}
+      <div className="hero-grid-pattern absolute inset-0 z-[1]" aria-hidden="true" />
 
-      {/* Orbiting atoms */}
-      <circle cx="350" cy="155" r="26" fill="#0A8C7A" opacity="0.3" />
-      <circle cx="350" cy="155" r="12" fill="#0DB89E" opacity="0.75" />
-
-      <circle cx="155" cy="170" r="22" fill="#C9A84C" opacity="0.3" />
-      <circle cx="155" cy="170" r="9"  fill="#C9A84C" opacity="0.85" />
-
-      <circle cx="340" cy="345" r="20" fill="#0A8C7A" opacity="0.28" />
-      <circle cx="340" cy="345" r="9"  fill="#0DB89E" opacity="0.75" />
-
-      <circle cx="160" cy="335" r="24" fill="#0A8C7A" opacity="0.25" />
-      <circle cx="160" cy="335" r="10" fill="#0DB89E" opacity="0.65" />
-
-      <circle cx="250" cy="88"  r="18" fill="#C9A84C" opacity="0.4" />
-      <circle cx="250" cy="88"  r="7"  fill="#E8C96A" opacity="0.9" />
-
-      <circle cx="250" cy="410" r="15" fill="#0A8C7A" opacity="0.35" />
-      <circle cx="250" cy="410" r="6"  fill="#0DB89E" opacity="0.8" />
-
-      <circle cx="418" cy="250" r="12" fill="#0DB89E" opacity="0.45" />
-      <circle cx="82"  cy="250" r="12" fill="#0DB89E" opacity="0.45" />
-
-      {/* Bond lines */}
-      <line x1="250" y1="230" x2="340" y2="170" stroke="#0A8C7A" strokeWidth="1.5" opacity="0.35" />
-      <line x1="250" y1="230" x2="162" y2="178" stroke="#C9A84C" strokeWidth="1.5" opacity="0.3" />
-      <line x1="250" y1="270" x2="338" y2="333" stroke="#0A8C7A" strokeWidth="1.5" opacity="0.3" />
-      <line x1="250" y1="270" x2="162" y2="323" stroke="#0A8C7A" strokeWidth="1.5" opacity="0.25" />
-      <line x1="250" y1="212" x2="250" y2="106" stroke="#C9A84C" strokeWidth="1.5" opacity="0.3" />
-      <line x1="250" y1="288" x2="250" y2="395" stroke="#0A8C7A" strokeWidth="1.5" opacity="0.25" />
-      <line x1="268" y1="250" x2="406" y2="250" stroke="#0A8C7A" strokeWidth="1"   opacity="0.2" />
-      <line x1="232" y1="250" x2="94"  y2="250" stroke="#0A8C7A" strokeWidth="1"   opacity="0.2" />
-
-      {/* Hexagon overlay */}
-      <polygon
-        points="250,200 293,225 293,275 250,300 207,275 207,225"
-        stroke="#0A8C7A" strokeWidth="1" fill="none" opacity="0.18"
+      {/* Radial glow */}
+      <div
+        className="absolute inset-0 z-[2]"
+        style={{
+          background: 'radial-gradient(ellipse 70% 60% at 20% 50%, rgba(21,88,167,0.18) 0%, transparent 70%)',
+        }}
+        aria-hidden="true"
       />
 
-      {/* Small accent dots */}
-      <circle cx="390" cy="130" r="5" fill="#C9A84C" opacity="0.5" />
-      <circle cx="112" cy="128" r="5" fill="#0DB89E" opacity="0.5" />
-      <circle cx="390" cy="370" r="5" fill="#0DB89E" opacity="0.5" />
-      <circle cx="112" cy="372" r="5" fill="#C9A84C" opacity="0.5" />
-      <circle cx="420" cy="200" r="3" fill="#0DB89E" opacity="0.4" />
-      <circle cx="80"  cy="300" r="3" fill="#C9A84C" opacity="0.4" />
-    </svg>
+      {/* Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-28 flex flex-col h-full">
+        <div className="max-w-2xl flex-1">
+          {/* Badge pill */}
+          {badge && (
+            <motion.div
+              custom={0} variants={fadeUp} initial="hidden" animate="visible"
+              className="inline-flex items-center gap-2 bg-white/10 border border-white/15 rounded-full px-4 py-1.5 mb-6"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[#60a5fa] flex-shrink-0" aria-hidden="true" />
+              <span className="text-white/80 text-xs font-medium">{badge}</span>
+            </motion.div>
+          )}
+
+          <motion.h1
+            custom={badge ? 1 : 0} variants={fadeUp} initial="hidden" animate="visible"
+            className="text-3xl sm:text-4xl lg:text-[52px] font-bold text-white leading-[1.12] tracking-tight mb-5"
+          >
+            {title}
+          </motion.h1>
+
+          <motion.p
+            custom={badge ? 2 : 1} variants={fadeUp} initial="hidden" animate="visible"
+            className="text-white/65 text-base lg:text-lg leading-relaxed mb-8 max-w-xl"
+          >
+            {subtitle}
+          </motion.p>
+
+          <motion.div
+            custom={badge ? 3 : 2} variants={fadeUp} initial="hidden" animate="visible"
+            className="flex flex-wrap gap-3"
+          >
+            {primaryCta && (
+              <Link
+                to={primaryCta.to}
+                className="btn-primary px-6 py-3 text-sm inline-flex items-center gap-2"
+              >
+                {primaryCta.label}
+                <ArrowRight size={15} aria-hidden="true" />
+              </Link>
+            )}
+            {secondaryCta && (
+              <Link to={secondaryCta.to} className="btn-outline-white px-6 py-3 text-sm inline-block">
+                {secondaryCta.label}
+              </Link>
+            )}
+          </motion.div>
+        </div>
+
+        {/* Stats row */}
+        {showStats && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.45, ease: 'easeOut' as const }}
+            className="mt-14 pt-8 border-t border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-0"
+          >
+            {stats.map((s, i) => (
+              <div
+                key={s.label}
+                className={`text-center sm:text-left ${i > 0 ? 'sm:border-l sm:border-white/10 sm:pl-8' : ''}`}
+              >
+                <p className="text-2xl lg:text-3xl font-bold text-white">{s.value}</p>
+                <p className="text-white/50 text-xs mt-1">{s.label}</p>
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </div>
+    </section>
   );
 }

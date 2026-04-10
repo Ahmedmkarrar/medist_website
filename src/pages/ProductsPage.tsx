@@ -3,21 +3,13 @@ import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X } from 'lucide-react';
 import { industries } from '../data/industries';
-import IndustryIcon from '../components/IndustryIcon';
+import HeroSection from '../components/HeroSection';
+import CtaBanner from '../components/CtaBanner';
 
-interface ProductCard {
-  name: string;
-  industryId: string;
-  industryName: string;
-}
+interface ProductCard { name: string; industryId: string; industryName: string; }
 
-// Flatten all products into a single searchable list
-const allProducts: ProductCard[] = industries.flatMap((ind) =>
-  ind.products.map((p) => ({
-    name: p,
-    industryId: ind.id,
-    industryName: ind.name,
-  }))
+const allProducts: ProductCard[] = industries.flatMap(ind =>
+  ind.products.map(p => ({ name: p, industryId: ind.id, industryName: ind.name }))
 );
 
 export default function ProductsPage() {
@@ -25,120 +17,71 @@ export default function ProductsPage() {
   const [search, setSearch] = useState('');
   const activeIndustry = searchParams.get('industry') ?? 'all';
 
-  useEffect(() => {
-    window.scrollTo({ top: 0 });
-  }, []);
+  useEffect(() => { window.scrollTo({ top: 0 }); }, []);
 
   const filtered = useMemo(() => {
-    let result = allProducts;
-    if (activeIndustry !== 'all') {
-      result = result.filter((p) => p.industryId === activeIndustry);
-    }
+    let r = allProducts;
+    if (activeIndustry !== 'all') r = r.filter(p => p.industryId === activeIndustry);
     if (search.trim()) {
       const q = search.toLowerCase();
-      result = result.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.industryName.toLowerCase().includes(q)
-      );
+      r = r.filter(p => p.name.toLowerCase().includes(q) || p.industryName.toLowerCase().includes(q));
     }
-    return result;
+    return r;
   }, [activeIndustry, search]);
 
   function setIndustry(id: string) {
-    if (id === 'all') {
-      searchParams.delete('industry');
-      setSearchParams(searchParams);
-    } else {
-      setSearchParams({ industry: id });
-    }
+    if (id === 'all') { searchParams.delete('industry'); setSearchParams(searchParams); }
+    else setSearchParams({ industry: id });
   }
 
   return (
-    <main id="main-content" className="min-h-screen bg-[#F7F9FC]">
-      {/* Page header */}
-      <div className="bg-[#071228] pt-28 pb-14">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl lg:text-5xl font-bold text-white mb-4"
-          >
-            Our Product Catalogue
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-[#8A9BB0] text-lg max-w-2xl"
-          >
-            Browse 500+ premium raw ingredients sourced from certified global suppliers.
-          </motion.p>
-        </div>
-      </div>
+    <main id="main-content">
+      <HeroSection
+        title="Our Product Catalogue"
+        subtitle="500+ premium raw ingredients and materials sourced from certified global suppliers across 7 industry verticals."
+        primaryCta={{ label: 'Request a Sample', to: '/contact' }}
+      />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10">
-        {/* Search bar */}
-        <div className="relative max-w-lg mb-8">
-          <Search
-            size={18}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9BB0]"
-            aria-hidden="true"
-          />
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+        {/* Search */}
+        <div className="relative max-w-md mb-8">
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94a3b8]" aria-hidden="true" />
           <input
             type="search"
-            placeholder="Search products or ingredients..."
+            placeholder="Search products…"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-11 pr-10 py-3 bg-white border border-gray-200 rounded-xl text-sm text-[#0D1F3C] placeholder:text-[#8A9BB0] focus:outline-none focus:ring-2 focus:ring-[#0A8C7A]/40 focus:border-[#0A8C7A] transition"
+            onChange={e => setSearch(e.target.value)}
+            className="w-full pl-9 pr-9 py-2.5 text-sm border border-[#e2e8f0] rounded-lg bg-white text-[#1e293b] placeholder:text-[#94a3b8] focus:outline-none focus:ring-2 focus:ring-[#1d5fa8]/20 focus:border-[#1d5fa8] transition"
             aria-label="Search products"
           />
           {search && (
-            <button
-              onClick={() => setSearch('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A9BB0] hover:text-[#0D1F3C]"
-              aria-label="Clear search"
-            >
-              <X size={16} />
+            <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94a3b8] hover:text-[#374151]" aria-label="Clear">
+              <X size={14} />
             </button>
           )}
         </div>
 
         <div className="flex gap-8 flex-col lg:flex-row">
-          {/* Sidebar filter */}
-          <aside className="lg:w-56 flex-shrink-0" aria-label="Filter by industry">
-            <h2 className="text-xs font-semibold uppercase tracking-widest text-[#8A9BB0] mb-4">
-              Filter by Industry
-            </h2>
-            <ul className="flex flex-row flex-wrap lg:flex-col gap-2 list-none" role="list">
+          {/* Sidebar */}
+          <aside className="lg:w-52 flex-shrink-0" aria-label="Filter by industry">
+            <p className="text-xs font-semibold uppercase tracking-widest text-[#94a3b8] mb-3">Industry</p>
+            <ul className="flex flex-row flex-wrap lg:flex-col gap-2 list-none">
               <li>
                 <button
                   onClick={() => setIndustry('all')}
-                  className={`w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                    activeIndustry === 'all'
-                      ? 'bg-[#0A8C7A] text-white shadow-md shadow-[#0A8C7A]/20'
-                      : 'bg-white border border-gray-200 text-[#0D1F3C] hover:border-[#0A8C7A]/40'
-                  }`}
+                  className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all ${activeIndustry === 'all' ? 'bg-[#1d5fa8] text-white' : 'bg-white border border-[#e2e8f0] text-[#374151] hover:border-[#1d5fa8]/40'}`}
                   aria-pressed={activeIndustry === 'all'}
                 >
                   All Industries
                 </button>
               </li>
-              {industries.map((ind) => (
+              {industries.map(ind => (
                 <li key={ind.id}>
                   <button
                     onClick={() => setIndustry(ind.id)}
-                    className={`w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium transition-all flex items-center gap-2 ${
-                      activeIndustry === ind.id
-                        ? 'bg-[#0A8C7A] text-white shadow-md shadow-[#0A8C7A]/20'
-                        : 'bg-white border border-gray-200 text-[#0D1F3C] hover:border-[#0A8C7A]/40'
-                    }`}
+                    className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all ${activeIndustry === ind.id ? 'bg-[#1d5fa8] text-white' : 'bg-white border border-[#e2e8f0] text-[#374151] hover:border-[#1d5fa8]/40'}`}
                     aria-pressed={activeIndustry === ind.id}
                   >
-                    <span className={activeIndustry === ind.id ? 'text-white/80' : 'text-[#0A8C7A]'}>
-                      <IndustryIcon id={ind.icon} size={14} />
-                    </span>
                     {ind.name}
                   </button>
                 </li>
@@ -146,50 +89,43 @@ export default function ProductsPage() {
             </ul>
           </aside>
 
-          {/* Product grid */}
+          {/* Grid */}
           <div className="flex-1">
-            <p className="text-sm text-[#8A9BB0] mb-5">
-              Showing <strong className="text-[#0D1F3C]">{filtered.length}</strong> products
+            <p className="text-sm text-[#64748b] mb-5">
+              Showing <strong className="text-[#1e293b]">{filtered.length}</strong> products
             </p>
-
             <AnimatePresence mode="wait">
               <motion.ul
                 key={activeIndustry + search}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.25 }}
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
                 className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 list-none"
-                role="list"
               >
                 {filtered.map((product, i) => (
                   <motion.li
                     key={product.name + product.industryId}
-                    initial={{ opacity: 0, y: 14 }}
+                    initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: Math.min(i * 0.03, 0.3) }}
+                    transition={{ duration: 0.25, delay: Math.min(i * 0.025, 0.25) }}
                   >
-                    <article className="bg-white border border-gray-200 rounded-xl p-5 hover:border-[#0A8C7A]/40 hover:shadow-sm transition-all h-full">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0A8C7A]/10 text-[#0A8C7A] text-xs font-semibold mb-3">
-                        <IndustryIcon id={product.industryId} size={11} />
+                    <article className="bg-white border border-[#e2e8f0] rounded-lg p-4 hover:border-[#1d5fa8]/30 hover:shadow-sm transition-all h-full">
+                      <span
+                        className="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold mb-3"
+                        style={{ background: '#eff6ff', color: '#1d5fa8' }}
+                      >
                         {product.industryName}
                       </span>
-                      <p className="text-[#0D1F3C] text-sm font-medium leading-snug">
-                        {product.name}
-                      </p>
+                      <p className="text-sm font-medium text-[#1e293b] leading-snug">{product.name}</p>
                     </article>
                   </motion.li>
                 ))}
               </motion.ul>
             </AnimatePresence>
-
             {filtered.length === 0 && (
               <div className="text-center py-20">
-                <p className="text-[#8A9BB0] text-lg">No products match your search.</p>
-                <button
-                  onClick={() => { setSearch(''); setIndustry('all'); }}
-                  className="mt-4 text-[#0A8C7A] text-sm font-semibold hover:underline"
-                >
+                <p className="text-[#64748b]">No products match your search.</p>
+                <button onClick={() => { setSearch(''); setIndustry('all'); }}
+                  className="mt-3 text-sm text-[#1d5fa8] font-semibold hover:underline">
                   Clear filters
                 </button>
               </div>
@@ -197,6 +133,8 @@ export default function ProductsPage() {
           </div>
         </div>
       </div>
+
+      <CtaBanner />
     </main>
   );
 }
