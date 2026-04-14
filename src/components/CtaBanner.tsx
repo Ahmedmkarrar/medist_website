@@ -1,7 +1,23 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-export default function CtaBanner() {
+interface CtaBannerProps {
+  quote?: string;
+  quoteHighlight?: string;
+  ctaTitle?: string;
+  ctaBody?: string;
+  primaryCta?: { label: string; to: string };
+  secondaryCta?: { label: string; to: string };
+}
+
+export default function CtaBanner({
+  quote = "In our field, reputation is not built through claims. It is built through repeated delivery under pressure.",
+  quoteHighlight = "Medist maintains a clear standard: every commitment is supported by structure, and every structure is executed with precision.",
+  ctaTitle = "Structured Trade. Reliable Outcomes.",
+  ctaBody = "Whether you are expanding into new markets or securing critical supply, Medist operates to ensure continuity, compliance, and control at every stage.",
+  primaryCta = { label: 'Contact Medist', to: '/contact' },
+  secondaryCta = { label: 'Explore Products', to: '/products' },
+}: CtaBannerProps) {
   return (
     <>
       {/* Quote block */}
@@ -14,12 +30,8 @@ export default function CtaBanner() {
             style={{ background: 'linear-gradient(135deg, #0b1d35 0%, #0f3a5e 100%)' }}
           >
             <p className="text-white text-lg lg:text-xl leading-relaxed max-w-4xl">
-              In our field, reputation is not built through claims. It is built through repeated delivery
-              under pressure.{' '}
-              <strong className="text-white font-semibold">
-                Medist maintains a clear standard: every commitment is supported by structure, and every
-                structure is executed with precision.
-              </strong>
+              {quote}{' '}
+              <strong className="text-white font-semibold">{quoteHighlight}</strong>
             </p>
           </motion.div>
         </div>
@@ -40,18 +52,17 @@ export default function CtaBanner() {
               id="cta-heading"
               className="text-2xl lg:text-[2rem] font-bold text-[#0f1e35] leading-snug tracking-tight mb-4"
             >
-              Structured Trade. Reliable Outcomes.
+              {ctaTitle}
             </h2>
             <p className="text-[#64748b] text-base leading-relaxed mb-8 max-w-xl mx-auto">
-              Whether you are expanding into new markets or securing critical supply, Medist is structured
-              to ensure continuity, compliance, and control at every stage.
+              {ctaBody}
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
-              <Link to="/contact" className="btn-navy px-7 py-3.5 text-sm">
-                Contact Medist
+              <Link to={primaryCta.to} className="btn-navy px-7 py-3.5 text-sm">
+                {primaryCta.label}
               </Link>
-              <Link to="/products" className="btn-secondary px-7 py-3.5 text-sm">
-                Explore Products
+              <Link to={secondaryCta.to} className="btn-secondary px-7 py-3.5 text-sm">
+                {secondaryCta.label}
               </Link>
             </div>
           </motion.div>

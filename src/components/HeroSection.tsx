@@ -10,6 +10,7 @@ interface HeroSectionProps {
   eyebrow?: string;
   title: string;
   subtitle: string;
+  subtitleExtra?: string;
   primaryCta?: { label: string; to: string };
   secondaryCta?: { label: string; to: string };
   card?: HeroCard;
@@ -27,6 +28,7 @@ export default function HeroSection({
   eyebrow,
   title,
   subtitle,
+  subtitleExtra,
   primaryCta,
   secondaryCta,
   card,
@@ -65,14 +67,24 @@ export default function HeroSection({
 
             <motion.p
               custom={eyebrow ? 2 : 1} variants={fadeUp} initial="hidden" animate="visible"
-              className="text-[#64748b] text-lg leading-relaxed mb-8 max-w-xl"
+              className="text-[#64748b] text-lg leading-relaxed max-w-xl"
+              style={{ marginBottom: subtitleExtra ? '12px' : '2rem' }}
             >
               {subtitle}
             </motion.p>
 
+            {subtitleExtra && (
+              <motion.p
+                custom={eyebrow ? 3 : 2} variants={fadeUp} initial="hidden" animate="visible"
+                className="text-[#64748b] text-lg leading-relaxed mb-8 max-w-xl"
+              >
+                {subtitleExtra}
+              </motion.p>
+            )}
+
             {(primaryCta || secondaryCta) && (
               <motion.div
-                custom={eyebrow ? 3 : 2} variants={fadeUp} initial="hidden" animate="visible"
+                custom={eyebrow ? (subtitleExtra ? 4 : 3) : 2} variants={fadeUp} initial="hidden" animate="visible"
                 className="flex flex-wrap gap-3"
               >
                 {primaryCta && (

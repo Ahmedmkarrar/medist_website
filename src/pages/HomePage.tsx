@@ -38,7 +38,8 @@ export default function HomePage() {
       <HeroSection
         eyebrow="Operating Since 2006"
         title="We Move Supply Where It Matters"
-        subtitle="Medist acts as a strategic link between manufacturers and markets — securing demand, structuring trade, and ensuring the compliant, reliable flow of pharmaceutical, food, and personal care materials across GCC & MENA."
+        subtitle="Medist acts as a strategic link between manufacturers and markets — securing demand, structuring trade, and ensuring the compliant, reliable flow of pharmaceutical, food, and personal care materials."
+        subtitleExtra="Enabling manufacturers to expand into new markets while ensuring buyers maintain consistent, dependable supply."
         primaryCta={{ label: 'Request a Quote', to: '/contact' }}
         secondaryCta={{ label: 'Explore Capabilities', to: '/products' }}
         card={{
@@ -184,7 +185,14 @@ export default function HomePage() {
       </section>
 
       {/* ── Quote + CTA ── */}
-      <CtaBanner />
+      <CtaBanner
+        quote="In our field, reputation is not built through claims. It is built through repeated delivery under pressure."
+        quoteHighlight="Medist maintains a clear standard: every commitment is supported by structure, and every structure is executed with precision."
+        ctaTitle="Structured Trade. Reliable Outcomes."
+        ctaBody="Whether you are expanding into new markets or securing critical supply, Medist operates to ensure continuity, compliance, and control at every stage."
+        primaryCta={{ label: 'Request a Quote', to: '/contact' }}
+        secondaryCta={{ label: 'Contact Medist', to: '/contact' }}
+      />
 
     </main>
   );

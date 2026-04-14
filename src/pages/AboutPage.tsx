@@ -351,7 +351,14 @@ export default function AboutPage() {
       </section>
 
       {/* ── Quote + CTA ── */}
-      <CtaBanner />
+      <CtaBanner
+        quote="More than 20 years of activity have shaped a clear identity: practical, disciplined, and built around reliable execution."
+        quoteHighlight="The objective has never been to add noise to the supply chain. It has been to make it work — properly, consistently, and at the standard serious industries require."
+        ctaTitle="Built for Long-Term Commercial Trust"
+        ctaBody="Whether the priority is supply continuity, market development, documentation confidence, or dependable execution, the company is structured to support demanding sectors with clarity and control."
+        primaryCta={{ label: 'Contact Medist', to: '/contact' }}
+        secondaryCta={{ label: 'Explore Careers', to: '/about#careers' }}
+      />
 
     </main>
   );
