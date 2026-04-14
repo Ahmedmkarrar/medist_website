@@ -1,139 +1,123 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+
+interface HeroCard {
+  heading: string;
+  items: string[];
+}
 
 interface HeroSectionProps {
+  eyebrow?: string;
   title: string;
   subtitle: string;
   primaryCta?: { label: string; to: string };
   secondaryCta?: { label: string; to: string };
-  bgImage?: string;
-  badge?: string;
-  showStats?: boolean;
+  card?: HeroCard;
 }
 
-const stats = [
-  { value: '20+', label: 'Years Experience' },
-  { value: '500+', label: 'Products' },
-  { value: '50+', label: 'Global Suppliers' },
-  { value: '30+', label: 'Countries Served' },
-];
-
 const fadeUp = {
-  hidden:  { opacity: 0, y: 28 },
+  hidden:  { opacity: 0, y: 24 },
   visible: (i: number) => ({
     opacity: 1, y: 0,
-    transition: { duration: 0.65, delay: i * 0.1, ease: 'easeOut' as const },
+    transition: { duration: 0.6, delay: i * 0.1, ease: 'easeOut' as const },
   }),
 };
 
 export default function HeroSection({
+  eyebrow,
   title,
   subtitle,
   primaryCta,
   secondaryCta,
-  bgImage,
-  badge,
-  showStats = false,
+  card,
 }: HeroSectionProps) {
   return (
-    <section className="hero-photo relative" style={{ minHeight: showStats ? '560px' : '420px' }} aria-label="Page hero">
-      {/* Background */}
-      {bgImage ? (
+    <section
+      style={{ background: 'linear-gradient(180deg, #ffffff 0%, #f6f8fa 100%)' }}
+      className="py-20 lg:py-28"
+      aria-label="Page hero"
+    >
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div
-          className="hero-photo-bg"
-          style={{ backgroundImage: `url(${bgImage})` }}
-          aria-hidden="true"
-        />
-      ) : (
-        <div
-          className="hero-photo-bg"
-          style={{
-            background: 'linear-gradient(135deg, #060e1c 0%, #0a1830 40%, #0e2240 70%, #0c1e3a 100%)',
-          }}
-          aria-hidden="true"
-        />
-      )}
+          className={
+            card
+              ? 'grid lg:grid-cols-[1.2fr_0.8fr] gap-12 items-center'
+              : ''
+          }
+        >
+          {/* Left — text */}
+          <div className={card ? '' : 'max-w-2xl'}>
+            {eyebrow && (
+              <motion.span
+                custom={0} variants={fadeUp} initial="hidden" animate="visible"
+                className="section-label block mb-4"
+              >
+                {eyebrow}
+              </motion.span>
+            )}
 
-      {/* Grid pattern overlay */}
-      <div className="hero-grid-pattern absolute inset-0 z-[1]" aria-hidden="true" />
-
-      {/* Radial glow */}
-      <div
-        className="absolute inset-0 z-[2]"
-        style={{
-          background: 'radial-gradient(ellipse 70% 60% at 20% 50%, rgba(21,88,167,0.18) 0%, transparent 70%)',
-        }}
-        aria-hidden="true"
-      />
-
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-28 flex flex-col h-full">
-        <div className="max-w-2xl flex-1">
-          {/* Badge pill */}
-          {badge && (
-            <motion.div
-              custom={0} variants={fadeUp} initial="hidden" animate="visible"
-              className="inline-flex items-center gap-2 bg-white/10 border border-white/15 rounded-full px-4 py-1.5 mb-6"
+            <motion.h1
+              custom={eyebrow ? 1 : 0} variants={fadeUp} initial="hidden" animate="visible"
+              className="text-4xl lg:text-[52px] font-bold text-[#0f1e35] leading-[1.08] tracking-tight mb-5"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#60a5fa] flex-shrink-0" aria-hidden="true" />
-              <span className="text-white/80 text-xs font-medium">{badge}</span>
-            </motion.div>
+              {title}
+            </motion.h1>
+
+            <motion.p
+              custom={eyebrow ? 2 : 1} variants={fadeUp} initial="hidden" animate="visible"
+              className="text-[#64748b] text-lg leading-relaxed mb-8 max-w-xl"
+            >
+              {subtitle}
+            </motion.p>
+
+            {(primaryCta || secondaryCta) && (
+              <motion.div
+                custom={eyebrow ? 3 : 2} variants={fadeUp} initial="hidden" animate="visible"
+                className="flex flex-wrap gap-3"
+              >
+                {primaryCta && (
+                  <Link
+                    to={primaryCta.to}
+                    className="btn-navy px-7 py-3.5 text-sm"
+                  >
+                    {primaryCta.label}
+                  </Link>
+                )}
+                {secondaryCta && (
+                  <Link
+                    to={secondaryCta.to}
+                    className="btn-secondary px-7 py-3.5 text-sm"
+                  >
+                    {secondaryCta.label}
+                  </Link>
+                )}
+              </motion.div>
+            )}
+          </div>
+
+          {/* Right — info card */}
+          {card && (
+            <motion.aside
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, delay: 0.22, ease: 'easeOut' }}
+              className="bg-white border border-[#e2e8f0] rounded-2xl p-7 shadow-[0_12px_32px_rgba(16,32,42,0.08)]"
+            >
+              <h3 className="text-sm font-semibold text-[#0f1e35] mb-5">{card.heading}</h3>
+              <ul className="flex flex-col gap-3.5 list-none">
+                {card.items.map(item => (
+                  <li
+                    key={item}
+                    className="flex items-start gap-3 text-sm text-[#64748b] leading-relaxed"
+                  >
+                    <span className="text-[#1558a7] font-bold flex-shrink-0 mt-px">—</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </motion.aside>
           )}
-
-          <motion.h1
-            custom={badge ? 1 : 0} variants={fadeUp} initial="hidden" animate="visible"
-            className="text-3xl sm:text-4xl lg:text-[52px] font-bold text-white leading-[1.12] tracking-tight mb-5"
-          >
-            {title}
-          </motion.h1>
-
-          <motion.p
-            custom={badge ? 2 : 1} variants={fadeUp} initial="hidden" animate="visible"
-            className="text-white/65 text-base lg:text-lg leading-relaxed mb-8 max-w-xl"
-          >
-            {subtitle}
-          </motion.p>
-
-          <motion.div
-            custom={badge ? 3 : 2} variants={fadeUp} initial="hidden" animate="visible"
-            className="flex flex-wrap gap-3"
-          >
-            {primaryCta && (
-              <Link
-                to={primaryCta.to}
-                className="btn-primary px-6 py-3 text-sm inline-flex items-center gap-2"
-              >
-                {primaryCta.label}
-                <ArrowRight size={15} aria-hidden="true" />
-              </Link>
-            )}
-            {secondaryCta && (
-              <Link to={secondaryCta.to} className="btn-outline-white px-6 py-3 text-sm inline-block">
-                {secondaryCta.label}
-              </Link>
-            )}
-          </motion.div>
         </div>
-
-        {/* Stats row */}
-        {showStats && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.45, ease: 'easeOut' as const }}
-            className="mt-14 pt-8 border-t border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-0"
-          >
-            {stats.map((s, i) => (
-              <div
-                key={s.label}
-                className={`text-center sm:text-left ${i > 0 ? 'sm:border-l sm:border-white/10 sm:pl-8' : ''}`}
-              >
-                <p className="text-2xl lg:text-3xl font-bold text-white">{s.value}</p>
-                <p className="text-white/50 text-xs mt-1">{s.label}</p>
-              </div>
-            ))}
-          </motion.div>
-        )}
       </div>
     </section>
   );

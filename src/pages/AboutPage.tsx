@@ -1,54 +1,81 @@
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Users, Award, Globe, ShieldCheck, Briefcase, MapPin } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import HeroSection from '../components/HeroSection';
 import CtaBanner from '../components/CtaBanner';
-import CertificationsSection from '../components/CertificationsSection';
+
+const storyCards = [
+  {
+    title: 'Mission',
+    body: 'To strengthen supply continuity between manufacturers and markets through disciplined execution, accountable trade practices, and long-term commercial reliability.',
+  },
+  {
+    title: 'Vision',
+    body: 'To remain a trusted link in critical supply networks by aligning quality, logistics, documentation, and market needs into one coherent system.',
+  },
+];
+
+const teamCards = [
+  {
+    title: 'Commercial Judgment',
+    body: 'Experience across regulated and performance-sensitive sectors supports decisions that balance supply reality, customer needs, documentation requirements, and market timing.',
+  },
+  {
+    title: 'Operational Coordination',
+    body: 'The company works across sourcing, trade flow, documentation, and logistics with the coordination required to make transactions dependable rather than improvised.',
+  },
+  {
+    title: 'Sector Range',
+    body: 'Expertise spans pharmaceuticals, food and beverage ingredients, personal and home care raw materials, laboratory-related supply, and documentation-heavy cross-border trade execution.',
+  },
+];
+
+const certCards = [
+  {
+    title: 'Documentation Readiness',
+    body: 'Reliability begins with clear, accurate, and accessible documentation that supports movement, evaluation, and commercial confidence.',
+  },
+  {
+    title: 'Supplier Alignment',
+    body: 'Transactions are approached with attention to source quality, product fit, and market expectations before execution begins.',
+  },
+  {
+    title: 'Traceability Mindset',
+    body: 'Traceability and process clarity are treated as operating requirements, especially in sectors where consistency and accountability matter.',
+  },
+  {
+    title: 'Structured Evaluation',
+    body: 'Supplier and transaction review are approached systematically to reduce risk and protect the integrity of each movement.',
+  },
+];
 
 const regions = ['UAE', 'Saudi Arabia', 'Qatar', 'Kuwait', 'Oman', 'Bahrain', 'Egypt', 'Jordan'];
 
-const certs = [
-  { icon: ShieldCheck, label: 'ISO 22000' },
-  { icon: ShieldCheck, label: 'cGMP' },
-  { icon: ShieldCheck, label: 'GMP' },
-  { icon: ShieldCheck, label: 'Halal' },
-  { icon: ShieldCheck, label: 'Kosher' },
-];
-
-const team = [
+const coverageCards = [
   {
-    icon: Users,
-    title: 'Commercial Team',
-    body: 'Experienced sales specialists with deep knowledge of pharmaceutical and food ingredient markets across MENA.',
+    title: 'Reach',
+    items: [
+      'Access to major manufacturing regions',
+      'Support for regional market supply and distribution',
+      'Familiarity with cross-border trade requirements',
+    ],
   },
   {
-    icon: Award,
-    title: 'Technical Experts',
-    body: 'Application scientists and R&D advisors who help clients solve formulation challenges and meet regulatory targets.',
-  },
-  {
-    icon: Globe,
-    title: 'Regulatory Affairs',
-    body: 'In-house regulatory team supporting product registration, dossier preparation, and market access across GCC countries.',
+    title: 'Function',
+    items: [
+      'Support manufacturers seeking market expansion',
+      'Support buyers seeking dependable continuity',
+      'Operate across complex commercial environments with control',
+    ],
   },
 ];
 
-const openRoles = [
-  {
-    title: 'Technical Sales Manager — Pharmaceuticals',
-    location: 'Dubai, UAE',
-    type: 'Full-time',
-  },
-  {
-    title: 'Regulatory Affairs Specialist',
-    location: 'Dubai, UAE',
-    type: 'Full-time',
-  },
-  {
-    title: 'Application Scientist — Food & Beverage',
-    location: 'Dubai, UAE',
-    type: 'Full-time',
-  },
+const careerAreas = [
+  'Sales and business development',
+  'Sourcing and supplier coordination',
+  'Operations and logistics',
+  'Documentation and trade support',
+  'Market development and commercial execution',
 ];
 
 export default function AboutPage() {
@@ -56,202 +83,276 @@ export default function AboutPage() {
 
   return (
     <main id="main-content">
+
+      {/* ── Hero ── */}
       <HeroSection
-        title="About Medist"
-        subtitle="A leading distributor of pharmaceutical ingredients, food additives, personal care raw materials, and laboratory equipment serving the GCC & MENA region."
-        primaryCta={{ label: 'Contact Us', to: '/contact' }}
+        eyebrow="About Us"
+        title="Built Through Trade. Proven Through Time."
+        subtitle="Founded in 2006, Medist has spent more than 20 years operating across supply environments where reliability, compliance, and execution are not optional. The role has remained clear: connect manufacturers to markets, move critical materials with discipline."
+        primaryCta={{ label: 'Explore Our Story', to: '#story' }}
+        secondaryCta={{ label: 'Careers', to: '#careers' }}
+        card={{
+          heading: 'What defines the company',
+          items: [
+            'A reliable link between manufacturers and markets',
+            'Structured around disciplined trade and execution',
+            'Active in sectors where timing, quality, and compliance matter',
+            'Strengthened by more than 20 years of consistent market activity',
+          ],
+        }}
       />
 
-      {/* Story & Mission */}
+      {/* ── Our Story & Mission ── */}
       <section id="story" className="bg-white py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ duration: 0.55 }}
-            >
-              <p className="section-label mb-3">Our Story</p>
-              <h2 className="text-2xl lg:text-3xl font-bold text-[#0f1e35] mb-5">Our Story &amp; Mission</h2>
-              <div className="flex flex-col gap-4 text-sm text-[#374151] leading-relaxed">
-                <p>
-                  Medist was established with a clear mission: to bridge the gap between world-class ingredient
-                  manufacturers and the growing pharmaceutical, food, and personal care industries across the Middle East.
-                </p>
-                <p>
-                  Over two decades, we have built an extensive network of certified suppliers across Europe, Asia,
-                  and the Americas — enabling us to offer clients a single, reliable source for all their ingredient and
-                  raw material requirements.
-                </p>
-                <p>
-                  We don't simply distribute. We partner. Our team of application scientists, regulatory specialists,
-                  and logistics experts work alongside your team to ensure every ingredient we supply performs exactly
-                  as required — from R&amp;D through to full-scale production.
-                </p>
-              </div>
-            </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.5 }}
+            className="max-w-3xl mb-10"
+          >
+            <p className="section-label mb-3">Background</p>
+            <h2 className="text-2xl lg:text-3xl font-bold text-[#0f1e35] mb-5 leading-snug">
+              Our Story &amp; Mission
+            </h2>
+            <p className="text-[#64748b] text-base leading-relaxed mb-4">
+              Established in 2006, the company was built to serve as a dependable commercial link between
+              global manufacturers and regional demand. Over time, that role expanded across
+              pharmaceuticals, food and beverage ingredients, personal and home care, and
+              laboratory-related supply — always with the same operating principle: trade must be
+              structured properly to remain reliable.
+            </p>
+            <p className="text-[#64748b] text-base leading-relaxed">
+              Growth did not come from noise or overstatement. It came from sustained execution, careful
+              coordination, and the ability to operate in markets where documentation, timing, and supply
+              continuity matter. In sectors shaped by regulation, technical requirements, and commercial
+              pressure, dependable movement is not created by access alone. It is created by structure.
+            </p>
+          </motion.div>
 
-            {/* Team & Expertise + Certs */}
-            <div id="team" className="flex flex-col gap-8">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.1 }}
+          <div className="grid sm:grid-cols-2 gap-5">
+            {storyCards.map(({ title, body }, i) => (
+              <motion.article
+                key={title}
+                initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ duration: 0.45, delay: i * 0.1 }}
+                className="bg-white border border-[#e2e8f0] rounded-xl p-7 shadow-[0_8px_24px_rgba(16,32,42,0.06)] card-hover"
               >
-                <h2 className="text-xl font-bold text-[#0f1e35] mb-5">Team &amp; Expertise</h2>
-                <div className="flex flex-col gap-4">
-                  {team.map(({ icon: Icon, title, body }) => (
-                    <div key={title} className="flex items-start gap-3">
-                      <div className="w-9 h-9 rounded-lg bg-[#eff6ff] flex items-center justify-center flex-shrink-0" aria-hidden="true">
-                        <Icon size={16} className="text-[#1558a7]" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-[#0f1e35] mb-0.5">{title}</p>
-                        <p className="text-sm text-[#64748b] leading-relaxed">{body}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* Certifications box */}
-              <motion.div
-                id="certs"
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.15 }}
-                className="bg-[#f8fafc] border border-[#e2e8f0] rounded-xl p-6"
-              >
-                <h3 className="text-sm font-semibold text-[#0f1e35] mb-4">Certifications &amp; Compliance</h3>
-                <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
-                  {certs.map(({ icon: Icon, label }) => (
-                    <div key={label} className="flex flex-col items-center gap-2 text-center">
-                      <div className="w-11 h-11 rounded-full border-2 border-[#1558a7] flex items-center justify-center">
-                        <Icon size={14} className="text-[#1558a7]" aria-hidden="true" />
-                      </div>
-                      <span className="text-xs font-semibold text-[#374151]">{label}</span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            </div>
+                <h3 className="font-semibold text-[#0f1e35] text-base mb-3">{title}</h3>
+                <p className="text-sm text-[#64748b] leading-relaxed">{body}</p>
+              </motion.article>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Geographic Coverage */}
-      <section id="coverage" className="bg-[#f8fafc] border-y border-[#e2e8f0] py-14">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
-          <motion.p
-            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
-            viewport={{ once: true }} transition={{ duration: 0.4 }}
-            className="section-label mb-2"
-          >
-            Where We Operate
-          </motion.p>
-          <motion.h2
-            initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }}
+      {/* ── Team & Expertise ── */}
+      <section id="team" className="bg-[#f6f8fa] border-y border-[#e2e8f0] py-16 lg:py-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.5 }}
-            className="text-2xl font-bold text-[#0f1e35] mb-3"
+            className="max-w-3xl mb-10"
           >
-            Geographic Coverage
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
-            viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-[#64748b] text-sm mb-8 max-w-xl mx-auto"
+            <p className="section-label mb-3">People</p>
+            <h2 className="text-2xl lg:text-3xl font-bold text-[#0f1e35] mb-5 leading-snug">
+              Team &amp; Expertise
+            </h2>
+            <p className="text-[#64748b] text-base leading-relaxed">
+              Behind every successful transaction is a chain of correct decisions. That is where real
+              expertise shows. Strength lies in the ability to align sourcing, documentation, logistics,
+              and market requirements across multiple sectors. This requires more than product
+              familiarity — it requires judgment, commercial awareness, technical understanding, and the
+              discipline to execute under pressure.
+            </p>
+          </motion.div>
+
+          <div className="grid sm:grid-cols-3 gap-5">
+            {teamCards.map(({ title, body }, i) => (
+              <motion.article
+                key={title}
+                initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ duration: 0.45, delay: i * 0.09 }}
+                className="bg-white border border-[#e2e8f0] rounded-xl p-7 shadow-[0_8px_24px_rgba(16,32,42,0.06)] card-hover"
+              >
+                <h3 className="font-semibold text-[#0f1e35] text-base mb-3">{title}</h3>
+                <p className="text-sm text-[#64748b] leading-relaxed">{body}</p>
+              </motion.article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Certifications & Compliance ── */}
+      <section id="compliance" className="bg-white py-16 lg:py-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.5 }}
+            className="max-w-3xl mb-10"
           >
-            Serving manufacturers and distributors across the GCC and wider MENA region with
-            competitive lead times and local regulatory expertise.
-          </motion.p>
+            <p className="section-label mb-3">Standards</p>
+            <h2 className="text-2xl lg:text-3xl font-bold text-[#0f1e35] mb-5 leading-snug">
+              Certifications &amp; Compliance
+            </h2>
+            <p className="text-[#64748b] text-base leading-relaxed">
+              In this field, credibility is shaped by standards, documentation, and process discipline.
+              Operations are approached with a strong emphasis on compliance readiness, traceability,
+              supplier alignment, and documentation integrity — especially in sectors where quality
+              requirements, regulatory expectations, and commercial consequences are closely connected.
+            </p>
+          </motion.div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-5">
+            {certCards.map(({ title, body }, i) => (
+              <motion.article
+                key={title}
+                initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ duration: 0.45, delay: i * 0.08 }}
+                className="bg-white border border-[#e2e8f0] rounded-xl p-6 shadow-[0_8px_24px_rgba(16,32,42,0.06)] card-hover"
+              >
+                <h3 className="font-semibold text-[#0f1e35] text-sm mb-3">{title}</h3>
+                <p className="text-sm text-[#64748b] leading-relaxed">{body}</p>
+              </motion.article>
+            ))}
+          </div>
+
+          {/* Note panel */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.45 }}
+            className="bg-[#f6f8fa] border border-[#e2e8f0] rounded-xl p-6"
+          >
+            <p className="text-sm font-semibold text-[#0f1e35] mb-1">Note</p>
+            <p className="text-sm text-[#64748b] leading-relaxed">
+              Specific certifications, approvals, and product-related documentation can be shared based
+              on product category, origin, and destination market requirements.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Geographic Coverage ── */}
+      <section id="coverage" className="bg-[#f6f8fa] border-y border-[#e2e8f0] py-16 lg:py-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.5 }}
+            className="max-w-3xl mb-10"
+          >
+            <p className="section-label mb-3">Where We Operate</p>
+            <h2 className="text-2xl lg:text-3xl font-bold text-[#0f1e35] mb-5 leading-snug">
+              Geographic Coverage
+            </h2>
+            <p className="text-[#64748b] text-base leading-relaxed">
+              The business operates across international supply networks that connect manufacturing
+              strength with regional demand. Its value is not defined only by where products move, but by
+              how effectively those points are connected — through coordination, documentation,
+              responsiveness, and trade discipline.
+            </p>
+          </motion.div>
+
+          {/* Region pills */}
           <motion.div
             initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
-            viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.15 }}
-            className="flex flex-wrap items-center justify-center gap-3"
+            viewport={{ once: true }} transition={{ duration: 0.5 }}
+            className="flex flex-wrap gap-2.5 mb-10"
           >
             {regions.map(r => (
-              <span key={r} className="px-4 py-2 bg-white border border-[#e2e8f0] rounded-full text-sm font-medium text-[#374151] flex items-center gap-1.5">
+              <span
+                key={r}
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-[#e2e8f0] rounded-full text-sm text-[#374151] font-medium"
+              >
                 <MapPin size={12} className="text-[#1558a7]" aria-hidden="true" />
                 {r}
               </span>
             ))}
           </motion.div>
-        </div>
-      </section>
 
-      {/* Company Overview */}
-      <section className="bg-white py-16">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.5 }}
-            className="text-2xl font-bold text-[#0f1e35] mb-6"
-          >
-            Company Overview
-          </motion.h2>
-          <div className="mx-auto max-w-2xl bg-[#f8fafc] border border-[#e2e8f0] rounded-xl flex items-center justify-center h-56">
-            <p className="text-sm text-[#94a3b8]">Company video coming soon</p>
+          <div className="grid sm:grid-cols-2 gap-5">
+            {coverageCards.map(({ title, items }, i) => (
+              <motion.article
+                key={title}
+                initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ duration: 0.45, delay: i * 0.1 }}
+                className="bg-white border border-[#e2e8f0] rounded-xl p-7 shadow-[0_8px_24px_rgba(16,32,42,0.06)] card-hover"
+              >
+                <h3 className="font-semibold text-[#0f1e35] text-base mb-5">{title}</h3>
+                <ul className="flex flex-col gap-3 list-none">
+                  {items.map(item => (
+                    <li key={item} className="flex items-start gap-3 text-sm text-[#64748b] leading-relaxed">
+                      <span className="text-[#1558a7] font-bold flex-shrink-0 mt-px">—</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </motion.article>
+            ))}
           </div>
         </div>
       </section>
 
-      <CertificationsSection />
-
-      {/* Careers */}
-      <section id="careers" className="bg-[#f8fafc] border-t border-[#e2e8f0] py-16 lg:py-20">
+      {/* ── Careers ── */}
+      <section id="careers" className="bg-white py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.5 }}
-            className="mb-10"
+            className="max-w-3xl mb-10"
           >
-            <p className="section-label mb-2">Join Our Team</p>
-            <h2 className="text-2xl lg:text-3xl font-bold text-[#0f1e35] mb-3">Careers at Medist</h2>
-            <p className="text-sm text-[#64748b] max-w-lg">
-              We're growing across the MENA region and looking for talented professionals who share our
-              commitment to quality, compliance, and partnership.
+            <p className="section-label mb-3">Join Us</p>
+            <h2 className="text-2xl lg:text-3xl font-bold text-[#0f1e35] mb-5 leading-snug">
+              Careers
+            </h2>
+            <p className="text-[#64748b] text-base leading-relaxed">
+              Strong businesses are built by people who combine professionalism with judgment. The work
+              involves more than transactions — it involves responsibility, timing, clarity, and execution
+              across sectors where details matter. Discipline, consistency, and accountability are
+              essential qualities, not optional ones.
             </p>
           </motion.div>
 
-          <div className="flex flex-col gap-4 mb-10">
-            {openRoles.map(({ title, location, type }, i) => (
-              <motion.div
-                key={title}
-                initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="bg-white border border-[#e2e8f0] rounded-xl p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 card-hover"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-[#eff6ff] flex items-center justify-center flex-shrink-0" aria-hidden="true">
-                    <Briefcase size={18} className="text-[#1558a7]" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-[#0f1e35]">{title}</p>
-                    <p className="text-xs text-[#64748b] mt-0.5">{location} · {type}</p>
-                  </div>
-                </div>
-                <a
-                  href={`/contact?type=partner`}
-                  className="btn-ghost-blue px-4 py-2 text-xs flex-shrink-0 inline-flex items-center gap-1.5"
-                >
-                  Apply Now
-                </a>
-              </motion.div>
-            ))}
-          </div>
+          <div className="grid sm:grid-cols-2 gap-5">
+            <motion.article
+              initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }} transition={{ duration: 0.45 }}
+              className="bg-white border border-[#e2e8f0] rounded-xl p-7 shadow-[0_8px_24px_rgba(16,32,42,0.06)] card-hover"
+            >
+              <h3 className="font-semibold text-[#0f1e35] text-base mb-5">Areas of Opportunity</h3>
+              <ul className="flex flex-col gap-3 list-none">
+                {careerAreas.map(item => (
+                  <li key={item} className="flex items-start gap-3 text-sm text-[#64748b] leading-relaxed">
+                    <span className="text-[#1558a7] font-bold flex-shrink-0 mt-px">—</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </motion.article>
 
-          <motion.p
-            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
-            viewport={{ once: true }} transition={{ duration: 0.4 }}
-            className="text-sm text-[#64748b]"
-          >
-            Don't see a suitable role?{' '}
-            <a href="/contact" className="text-[#1558a7] font-semibold hover:underline">
-              Send us your CV
-            </a>{' '}
-            and we'll keep it on file for future opportunities.
-          </motion.p>
+            <motion.article
+              initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }} transition={{ duration: 0.45, delay: 0.1 }}
+              className="bg-white border border-[#e2e8f0] rounded-xl p-7 shadow-[0_8px_24px_rgba(16,32,42,0.06)] card-hover"
+            >
+              <h3 className="font-semibold text-[#0f1e35] text-base mb-3">Working Environment</h3>
+              <p className="text-sm text-[#64748b] leading-relaxed mb-6">
+                Those interested in meaningful work inside a company shaped by real operational
+                substance, disciplined trade practices, and execution-focused thinking are encouraged to
+                connect. We're building for the long term — and we look for people who think the same way.
+              </p>
+              <a
+                href="/contact?type=partner"
+                className="btn-navy px-6 py-3 text-sm inline-flex"
+              >
+                Get in Touch
+              </a>
+            </motion.article>
+          </div>
         </div>
       </section>
 
+      {/* ── Quote + CTA ── */}
       <CtaBanner />
+
     </main>
   );
 }

@@ -1,71 +1,62 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, FlaskConical } from 'lucide-react';
 
 export default function CtaBanner() {
   return (
-    <section
-      className="relative overflow-hidden py-16 lg:py-20"
-      style={{ background: 'linear-gradient(135deg, #060e1c 0%, #0a1830 50%, #0e2240 100%)' }}
-      aria-labelledby="cta-heading"
-    >
-      {/* Grid overlay */}
-      <div className="hero-grid-pattern absolute inset-0 opacity-60" aria-hidden="true" />
-
-      {/* Radial accent */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background: 'radial-gradient(ellipse 60% 80% at 80% 50%, rgba(21,88,167,0.2) 0%, transparent 65%)',
-        }}
-        aria-hidden="true"
-      />
-
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-
-          {/* Text block */}
+    <>
+      {/* Quote block */}
+      <section className="bg-white py-10 lg:py-14" aria-label="Company quote">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.6 }}
-            className="max-w-xl text-center lg:text-left"
+            className="rounded-2xl px-10 py-10 lg:py-12"
+            style={{ background: 'linear-gradient(135deg, #0b1d35 0%, #0f3a5e 100%)' }}
           >
-            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/15 rounded-full px-4 py-1.5 mb-5">
-              <FlaskConical size={13} className="text-[#60a5fa]" aria-hidden="true" />
-              <span className="text-white/80 text-xs font-medium">Ready to source with confidence?</span>
-            </div>
-
-            <h2 id="cta-heading" className="text-2xl lg:text-[34px] font-bold text-white leading-tight mb-3">
-              Looking for a Reliable Ingredient Partner?
-            </h2>
-            <p className="text-white/55 text-base leading-relaxed">
-              Get in touch with our team for samples, pricing, regulatory documentation,
-              and everything you need to move your project forward.
+            <p className="text-white text-lg lg:text-xl leading-relaxed max-w-4xl">
+              In our field, reputation is not built through claims. It is built through repeated delivery
+              under pressure.{' '}
+              <strong className="text-white font-semibold">
+                Medist maintains a clear standard: every commitment is supported by structure, and every
+                structure is executed with precision.
+              </strong>
             </p>
           </motion.div>
+        </div>
+      </section>
 
-          {/* Buttons */}
+      {/* CTA box */}
+      <section
+        className="bg-[#f6f8fa] border-t border-[#e2e8f0] py-16 lg:py-20 text-center"
+        aria-labelledby="cta-heading"
+      >
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}
-            className="flex flex-col sm:flex-row gap-3 flex-shrink-0"
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.55 }}
+            className="bg-white border border-[#e2e8f0] rounded-2xl px-8 py-12 shadow-[0_12px_32px_rgba(16,32,42,0.07)] max-w-3xl mx-auto"
           >
-            <Link
-              to="/contact"
-              className="btn-primary px-7 py-3.5 text-sm inline-flex items-center gap-2"
+            <h2
+              id="cta-heading"
+              className="text-2xl lg:text-[2rem] font-bold text-[#0f1e35] leading-snug tracking-tight mb-4"
             >
-              Contact Us Today
-              <ArrowRight size={15} aria-hidden="true" />
-            </Link>
-            <Link
-              to="/products"
-              className="btn-outline-white px-7 py-3.5 text-sm inline-flex items-center gap-2"
-            >
-              Browse Products
-            </Link>
+              Structured Trade. Reliable Outcomes.
+            </h2>
+            <p className="text-[#64748b] text-base leading-relaxed mb-8 max-w-xl mx-auto">
+              Whether you are expanding into new markets or securing critical supply, Medist is structured
+              to ensure continuity, compliance, and control at every stage.
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <Link to="/contact" className="btn-navy px-7 py-3.5 text-sm">
+                Contact Medist
+              </Link>
+              <Link to="/products" className="btn-secondary px-7 py-3.5 text-sm">
+                Explore Products
+              </Link>
+            </div>
           </motion.div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

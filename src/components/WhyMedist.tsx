@@ -1,80 +1,70 @@
 import { motion } from 'framer-motion';
-import { ShieldCheck, Snowflake, Headphones, Globe } from 'lucide-react';
 
-const features = [
+const pillars = [
   {
-    icon: ShieldCheck,
-    title: 'Regulatory Compliance',
-    body: 'GCC, SFDA, MOH, and international regulatory support — ensuring your products meet every market requirement, first time.',
-    stat: 'GCC & MENA',
+    title: 'Secure Supply',
+    items: [
+      'Identify and qualify dependable supply sources',
+      'Align product availability with market requirements',
+      'Maintain continuity under shifting market conditions',
+    ],
   },
   {
-    icon: Snowflake,
-    title: 'Cold Chain Solutions',
-    body: 'Temperature-controlled logistics for biologics, vaccines, and sensitive pharmaceutical products with full monitoring.',
-    stat: '2–8°C Certified',
+    title: 'Structure Trade',
+    items: [
+      'Coordinate documentation and trade flow',
+      'Manage logistics across borders and jurisdictions',
+      'Support compliant and efficient commercial execution',
+    ],
   },
   {
-    icon: Headphones,
-    title: 'Technical Support',
-    body: 'In-house application scientists and R&D advisors who help optimise your formulation and solve manufacturing challenges.',
-    stat: 'Expert Team',
-  },
-  {
-    icon: Globe,
-    title: 'Global Supplier Network',
-    body: 'Partnerships with 50+ certified manufacturers across Europe, Asia, and the Americas for uninterrupted, quality supply.',
-    stat: '50+ Suppliers',
+    title: 'Protect Outcomes',
+    items: [
+      'Reduce operational uncertainty and delivery risk',
+      'Support regulatory and quality requirements',
+      'Preserve the integrity of every transaction',
+    ],
   },
 ];
 
 export default function WhyMedist() {
   return (
-    <section className="bg-[#0b1d35] py-16 lg:py-20" aria-labelledby="why-heading">
+    <section className="bg-white py-16 lg:py-20" aria-labelledby="value-heading">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.5 }}
-          className="mb-12"
+          className="max-w-2xl mb-10"
         >
-          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#60a5fa] mb-2">
-            Our Advantage
-          </p>
-          <h2 id="why-heading" className="text-2xl lg:text-3xl font-bold text-white">
-            Why Choose Medist?
+          <p className="section-label mb-3">What We Do</p>
+          <h2 id="value-heading" className="text-2xl lg:text-3xl font-bold text-[#0f1e35] mb-4 leading-snug">
+            Execution Defines Reliability
           </h2>
+          <p className="text-[#64748b] text-base leading-relaxed">
+            In this industry, access is common. Execution is rare. Medist operates across the full
+            trade cycle with the discipline required to reduce friction, shorten timelines, and protect
+            the integrity of every transaction.
+          </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {features.map(({ icon: Icon, title, body, stat }, i) => (
+        <div className="grid sm:grid-cols-3 gap-5">
+          {pillars.map(({ title, items }, i) => (
             <motion.article
               key={title}
               initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ duration: 0.45, delay: i * 0.09 }}
-              className="why-card rounded-xl p-6 flex flex-col gap-4"
+              className="bg-white border border-[#e2e8f0] rounded-xl p-7 shadow-[0_8px_24px_rgba(16,32,42,0.06)] card-hover"
             >
-              {/* Icon */}
-              <div
-                className="w-11 h-11 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ background: 'rgba(96,165,250,0.12)' }}
-                aria-hidden="true"
-              >
-                <Icon size={20} className="text-[#60a5fa]" strokeWidth={1.75} />
-              </div>
-
-              <div className="flex-1">
-                <h3 className="font-semibold text-white text-sm mb-2">{title}</h3>
-                <p className="text-sm text-white/55 leading-relaxed">{body}</p>
-              </div>
-
-              {/* Stat chip */}
-              <div className="mt-auto">
-                <span className="inline-block text-[11px] font-semibold text-[#60a5fa] bg-[rgba(96,165,250,0.1)] border border-[rgba(96,165,250,0.2)] px-3 py-1 rounded-full">
-                  {stat}
-                </span>
-              </div>
+              <h3 className="font-semibold text-[#0f1e35] text-base mb-5">{title}</h3>
+              <ul className="flex flex-col gap-3 list-none">
+                {items.map(item => (
+                  <li key={item} className="flex items-start gap-3 text-sm text-[#64748b] leading-relaxed">
+                    <span className="text-[#1558a7] font-bold flex-shrink-0 mt-px">—</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </motion.article>
           ))}
         </div>
