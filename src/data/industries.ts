@@ -20,6 +20,89 @@ function makeIndustry(
   return { ...base, products: base.subcategories.flatMap(s => s.products) };
 }
 
+// ─── Food & Beverage Use Cases ──────────────────────────────────────────────
+
+export interface UseCase {
+  id: string;
+  name: string;
+}
+
+export const foodUseCases: UseCase[] = [
+  { id: 'bakery',        name: 'Bakery' },
+  { id: 'dairy',         name: 'Dairy' },
+  { id: 'meat',          name: 'Meat & Poultry' },
+  { id: 'beverages',     name: 'Beverages' },
+  { id: 'confectionery', name: 'Confectionery & Chocolate' },
+  { id: 'snacks',        name: 'Snacks & Cereals' },
+  { id: 'sauces',        name: 'Sauces & Condiments' },
+  { id: 'nutrition',     name: 'Nutritional & Health' },
+];
+
+/** Maps each Food & Beverage product name → applicable use case IDs */
+export const foodProductUseCases: Record<string, string[]> = {
+  // Hydrocolloids & Stabilizers
+  'Carrageenan (Kappa, Iota, Lambda)':  ['dairy', 'meat', 'beverages'],
+  'Xanthan Gum':                         ['bakery', 'sauces', 'beverages'],
+  'Guar Gum':                            ['bakery', 'dairy', 'sauces'],
+  'CMC (Carboxymethylcellulose)':        ['bakery', 'beverages', 'sauces'],
+  'Locust Bean Gum':                     ['dairy', 'bakery'],
+  'Native Corn Starch':                  ['bakery', 'sauces', 'dairy'],
+  'Modified Starch':                     ['bakery', 'dairy', 'sauces', 'meat'],
+  'Gelatin':                             ['dairy', 'confectionery', 'meat'],
+  'Pectin':                              ['confectionery', 'beverages', 'dairy'],
+  'Agar':                                ['dairy', 'confectionery'],
+  'Emulsifier & Stabiliser Systems':     ['bakery', 'dairy', 'beverages'],
+  'Lecithin':                            ['bakery', 'confectionery'],
+  'Hydroxypropyl Starch':                ['sauces', 'bakery'],
+  'Gum Arabic':                          ['beverages', 'confectionery'],
+
+  // Sweeteners & Flavors
+  'Juice Concentrates & Purées':         ['beverages', 'confectionery'],
+  'Flavours (Natural & Synthetic)':      ['bakery', 'beverages', 'confectionery', 'dairy', 'snacks'],
+  'Liquid Glucose':                      ['confectionery', 'bakery'],
+  'Maltodextrin':                        ['bakery', 'beverages', 'nutrition'],
+  'Sorbitol':                            ['confectionery', 'bakery'],
+  'Sugar Reduction Systems':             ['beverages', 'dairy', 'confectionery'],
+  'Caramel (Liquid & Powder)':           ['bakery', 'beverages', 'confectionery'],
+  'Food Colors (Natural & Synthetic)':   ['bakery', 'confectionery', 'beverages', 'snacks'],
+  'Malt Extract':                        ['bakery', 'beverages'],
+  'DMH (Dextrose Monohydrate)':          ['bakery', 'beverages', 'confectionery'],
+  'Fructose Syrup':                      ['beverages', 'confectionery'],
+  'Steviol Glycosides (Stevia)':         ['beverages', 'dairy', 'confectionery'],
+  'Chocolate Coatings & Chips':          ['confectionery', 'bakery', 'snacks'],
+  'Caramel Color':                       ['beverages', 'bakery', 'sauces'],
+
+  // Preservatives & Antioxidants
+  'Natamycin (E235)':                    ['dairy', 'meat', 'bakery'],
+  'Nisin':                               ['dairy', 'meat'],
+  'Citric Acid (Anhydrous & Monohydrate)': ['beverages', 'dairy', 'confectionery', 'sauces'],
+  'Lactic Acid':                         ['dairy', 'meat', 'beverages'],
+  'Ascorbic Acid (Vitamin C)':           ['bakery', 'beverages', 'nutrition'],
+  'Potassium Sorbate':                   ['bakery', 'beverages', 'dairy', 'sauces'],
+  'Sodium Benzoate':                     ['beverages', 'sauces'],
+  'Rosemary Extract (Natural Antioxidant)': ['meat', 'bakery', 'snacks'],
+  'Mixed Tocopherols (Vitamin E)':       ['bakery', 'nutrition', 'snacks'],
+  'TBHQ':                                ['snacks', 'bakery'],
+  'BHA / BHT':                           ['snacks', 'bakery', 'meat'],
+  'Acetic Acid':                         ['sauces', 'meat'],
+  'Propionic Acid':                      ['bakery'],
+
+  // Nutraceuticals & Fortification
+  'Vitamin & Mineral Premixes':          ['nutrition', 'beverages', 'dairy'],
+  'Soya Protein Isolate & Concentrates': ['meat', 'nutrition', 'bakery'],
+  'Textured Vegetable Protein (TVP)':    ['meat', 'snacks'],
+  'Whey Protein Concentrate (WPC 35/80)': ['nutrition', 'dairy', 'beverages'],
+  'Milk Powders (SMP, FCMP, WMP)':       ['dairy', 'bakery', 'beverages', 'confectionery'],
+  'Sweet Whey Powder':                   ['dairy', 'bakery', 'confectionery'],
+  'Omega-3 Fish Oil':                    ['nutrition', 'dairy'],
+  'Inulin (Chicory)':                    ['dairy', 'nutrition', 'beverages'],
+  'Collagen Peptides':                   ['nutrition', 'beverages'],
+  'Egg Powders (Whole Egg, Yolk, Albumen)': ['bakery', 'dairy', 'confectionery'],
+  'Lactoferrin':                         ['dairy', 'nutrition'],
+  'Beta-Glucan':                         ['nutrition', 'bakery'],
+  'Probiotics':                          ['dairy', 'nutrition', 'beverages'],
+};
+
 export const industries: Industry[] = [
   makeIndustry({
     id: 'pharma',

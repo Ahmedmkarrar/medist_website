@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X } from 'lucide-react';
-import { industries } from '../data/industries';
+import { industries, foodUseCases, foodProductUseCases } from '../data/industries';
 import HeroSection from '../components/HeroSection';
 import CtaBanner from '../components/CtaBanner';
 
@@ -25,15 +25,20 @@ export default function ProductsPage() {
   const [search, setSearch] = useState('');
   const activeIndustry = searchParams.get('industry') ?? 'all';
   const activeSub      = searchParams.get('sub') ?? 'all';
+  const activeUseCase  = searchParams.get('usecase') ?? 'all';
 
   useEffect(() => { window.scrollTo({ top: 0 }); }, []);
 
   const activeIndustryData = industries.find(i => i.id === activeIndustry);
+  const isFoodSelected = activeIndustry === 'food';
 
   const filtered = useMemo(() => {
     let r = allProducts;
     if (activeIndustry !== 'all') r = r.filter(p => p.industryId === activeIndustry);
     if (activeSub      !== 'all') r = r.filter(p => p.subId      === activeSub);
+    if (isFoodSelected && activeUseCase !== 'all') {
+      r = r.filter(p => (foodProductUseCases[p.name] ?? []).includes(activeUseCase));
+    }
     if (search.trim()) {
       const q = search.toLowerCase();
       r = r.filter(p =>
@@ -43,7 +48,7 @@ export default function ProductsPage() {
       );
     }
     return r;
-  }, [activeIndustry, activeSub, search]);
+  }, [activeIndustry, activeSub, activeUseCase, search, isFoodSelected]);
 
   function setIndustry(id: string) {
     const next = new URLSearchParams();
@@ -55,6 +60,14 @@ export default function ProductsPage() {
     const next = new URLSearchParams();
     if (activeIndustry !== 'all') next.set('industry', activeIndustry);
     if (id !== 'all') next.set('sub', id);
+    setSearchParams(next);
+  }
+
+  function setUseCase(id: string) {
+    const next = new URLSearchParams();
+    if (activeIndustry !== 'all') next.set('industry', activeIndustry);
+    if (activeSub !== 'all') next.set('sub', activeSub);
+    if (id !== 'all') next.set('usecase', id);
     setSearchParams(next);
   }
 
@@ -158,14 +171,51 @@ export default function ProductsPage() {
                     </li>
                   ))}
                 </ul>
+
+                {/* Use Case filter — Food & Beverage only */}
+                {isFoodSelected && (
+                  <div className="mt-6">
+                    <p className="text-xs font-bold uppercase tracking-widest text-[#94a3b8] mb-3">Use Case</p>
+                    <ul className="flex flex-col gap-1.5 list-none">
+                      <li>
+                        <button
+                          onClick={() => setUseCase('all')}
+                          className={`w-full text-left px-3 py-1.5 rounded-lg text-sm transition-all ${
+                            activeUseCase === 'all'
+                              ? 'font-semibold text-[#0e9f6e] bg-[#ecfdf5]'
+                              : 'text-[#374151] hover:text-[#0e9f6e]'
+                          }`}
+                          aria-pressed={activeUseCase === 'all'}
+                        >
+                          All Use Cases
+                        </button>
+                      </li>
+                      {foodUseCases.map(uc => (
+                        <li key={uc.id}>
+                          <button
+                            onClick={() => setUseCase(uc.id)}
+                            className={`w-full text-left px-3 py-1.5 rounded-lg text-sm transition-all ${
+                              activeUseCase === uc.id
+                                ? 'font-semibold text-[#0e9f6e] bg-[#ecfdf5]'
+                                : 'text-[#374151] hover:text-[#0e9f6e]'
+                            }`}
+                            aria-pressed={activeUseCase === uc.id}
+                          >
+                            {uc.name}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             )}
           </aside>
 
           {/* Product grid */}
           <div className="flex-1 min-w-0">
-            {/* Active breadcrumb */}
-            {(activeIndustry !== 'all' || activeSub !== 'all') && (
+            {/* Active filter chips */}
+            {(activeIndustry !== 'all' || activeSub !== 'all' || activeUseCase !== 'all') && (
               <div className="flex flex-wrap items-center gap-2 mb-5">
                 {activeIndustry !== 'all' && (
                   <span
@@ -187,14 +237,24 @@ export default function ProductsPage() {
                   </span>
                 )}
                 {activeSub !== 'all' && activeIndustryData && (
-                  <span
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#f1f5f9] text-[#374151] border border-[#e2e8f0]"
-                  >
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#f1f5f9] text-[#374151] border border-[#e2e8f0]">
                     {activeIndustryData.subcategories.find(s => s.id === activeSub)?.name}
                     <button
                       onClick={() => setSub('all')}
                       className="ml-0.5 hover:opacity-70"
                       aria-label="Remove category filter"
+                    >
+                      <X size={11} />
+                    </button>
+                  </span>
+                )}
+                {activeUseCase !== 'all' && isFoodSelected && (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#ecfdf5] text-[#0e9f6e] border border-[#0e9f6e]/30">
+                    {foodUseCases.find(u => u.id === activeUseCase)?.name}
+                    <button
+                      onClick={() => setUseCase('all')}
+                      className="ml-0.5 hover:opacity-70"
+                      aria-label="Remove use case filter"
                     >
                       <X size={11} />
                     </button>
@@ -215,7 +275,6 @@ export default function ProductsPage() {
                 className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 list-none"
               >
                 {filtered.map((product, i) => {
-                  const ind = industries.find(x => x.id === product.industryId);
                   return (
                     <motion.li
                       key={product.name + product.subId}
@@ -223,21 +282,7 @@ export default function ProductsPage() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.25, delay: Math.min(i * 0.02, 0.2) }}
                     >
-                      <article className="bg-white border border-[#e2e8f0] rounded-lg p-4 hover:border-[#1558a7]/30 hover:shadow-sm transition-all h-full flex flex-col gap-2">
-                        <div className="flex flex-wrap gap-1.5">
-                          <span
-                            className="inline-block px-2 py-0.5 rounded-full text-[11px] font-semibold"
-                            style={{
-                              backgroundColor: ind?.lightBg ?? '#f8fafc',
-                              color: ind?.color ?? '#374151',
-                            }}
-                          >
-                            {product.industryName}
-                          </span>
-                          <span className="inline-block px-2 py-0.5 rounded-full text-[11px] font-medium bg-[#f1f5f9] text-[#64748b]">
-                            {product.subName}
-                          </span>
-                        </div>
+                      <article className="bg-white border border-[#e2e8f0] rounded-lg p-4 hover:border-[#1558a7]/30 hover:shadow-sm transition-all h-full flex items-center">
                         <p className="text-sm font-medium text-[#1e293b] leading-snug">{product.name}</p>
                       </article>
                     </motion.li>
