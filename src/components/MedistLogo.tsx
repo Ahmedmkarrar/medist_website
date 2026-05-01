@@ -5,22 +5,20 @@ interface MedistLogoProps {
 }
 
 export default function MedistLogo({ className = '', variant = 'dark', size = 'md' }: MedistLogoProps) {
-  const textColor = variant === 'light' ? '#ffffff' : '#0f1e35';
-  const fontSize  = size === 'lg' ? '22px' : size === 'sm' ? '16px' : '18px';
+  const height = size === 'lg' ? 56 : size === 'sm' ? 32 : 40;
 
   return (
-    <span
-      className={className}
+    <img
+      src="/logos/medist-logo.png"
+      alt="Medist FZE"
+      height={height}
       style={{
-        fontFamily: 'Inter, system-ui, sans-serif',
-        fontWeight: 700,
-        fontSize,
-        letterSpacing: '0.08em',
-        color: textColor,
-        userSelect: 'none',
+        height,
+        width: 'auto',
+        display: 'block',
+        filter: variant === 'light' ? 'brightness(0) invert(1)' : undefined,
       }}
-    >
-      MEDIST
-    </span>
+      className={className}
+    />
   );
 }
