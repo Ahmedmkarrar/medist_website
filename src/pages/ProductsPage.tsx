@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X } from 'lucide-react';
-import { industries, foodUseCases, foodProductUseCases } from '../data/industries';
+import { industries } from '../data/industries';
 import HeroSection from '../components/HeroSection';
 import CtaBanner from '../components/CtaBanner';
 
@@ -25,20 +25,15 @@ export default function ProductsPage() {
   const [search, setSearch] = useState('');
   const activeIndustry = searchParams.get('industry') ?? 'all';
   const activeSub      = searchParams.get('sub') ?? 'all';
-  const activeUseCase  = searchParams.get('usecase') ?? 'all';
 
   useEffect(() => { window.scrollTo({ top: 0 }); }, []);
 
   const activeIndustryData = industries.find(i => i.id === activeIndustry);
-  const isFoodSelected = activeIndustry === 'food';
 
   const filtered = useMemo(() => {
     let r = allProducts;
     if (activeIndustry !== 'all') r = r.filter(p => p.industryId === activeIndustry);
     if (activeSub      !== 'all') r = r.filter(p => p.subId      === activeSub);
-    if (isFoodSelected && activeUseCase !== 'all') {
-      r = r.filter(p => (foodProductUseCases[p.name] ?? []).includes(activeUseCase));
-    }
     if (search.trim()) {
       const q = search.toLowerCase();
       r = r.filter(p =>
@@ -47,8 +42,19 @@ export default function ProductsPage() {
         p.subName.toLowerCase().includes(q)
       );
     }
+    // Dedupe by industry + product name when no specific subcategory is selected
+    // (some products legitimately appear under multiple application subcategories)
+    if (activeSub === 'all') {
+      const seen = new Set<string>();
+      r = r.filter(p => {
+        const key = p.industryId + '|' + p.name;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    }
     return r;
-  }, [activeIndustry, activeSub, activeUseCase, search, isFoodSelected]);
+  }, [activeIndustry, activeSub, search]);
 
   function setIndustry(id: string) {
     const next = new URLSearchParams();
@@ -60,14 +66,6 @@ export default function ProductsPage() {
     const next = new URLSearchParams();
     if (activeIndustry !== 'all') next.set('industry', activeIndustry);
     if (id !== 'all') next.set('sub', id);
-    setSearchParams(next);
-  }
-
-  function setUseCase(id: string) {
-    const next = new URLSearchParams();
-    if (activeIndustry !== 'all') next.set('industry', activeIndustry);
-    if (activeSub !== 'all') next.set('sub', activeSub);
-    if (id !== 'all') next.set('usecase', id);
     setSearchParams(next);
   }
 
@@ -171,43 +169,6 @@ export default function ProductsPage() {
                     </li>
                   ))}
                 </ul>
-
-                {/* Use Case filter — Food & Beverage only */}
-                {isFoodSelected && (
-                  <div className="mt-6">
-                    <p className="text-xs font-bold uppercase tracking-widest text-[#94a3b8] mb-3">Use Case</p>
-                    <ul className="flex flex-col gap-1.5 list-none">
-                      <li>
-                        <button
-                          onClick={() => setUseCase('all')}
-                          className={`w-full text-left px-3 py-1.5 rounded-lg text-sm transition-all ${
-                            activeUseCase === 'all'
-                              ? 'font-semibold text-[#0e9f6e] bg-[#ecfdf5]'
-                              : 'text-[#374151] hover:text-[#0e9f6e]'
-                          }`}
-                          aria-pressed={activeUseCase === 'all'}
-                        >
-                          All Use Cases
-                        </button>
-                      </li>
-                      {foodUseCases.map(uc => (
-                        <li key={uc.id}>
-                          <button
-                            onClick={() => setUseCase(uc.id)}
-                            className={`w-full text-left px-3 py-1.5 rounded-lg text-sm transition-all ${
-                              activeUseCase === uc.id
-                                ? 'font-semibold text-[#0e9f6e] bg-[#ecfdf5]'
-                                : 'text-[#374151] hover:text-[#0e9f6e]'
-                            }`}
-                            aria-pressed={activeUseCase === uc.id}
-                          >
-                            {uc.name}
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
               </div>
             )}
           </aside>
@@ -215,7 +176,7 @@ export default function ProductsPage() {
           {/* Product grid */}
           <div className="flex-1 min-w-0">
             {/* Active filter chips */}
-            {(activeIndustry !== 'all' || activeSub !== 'all' || activeUseCase !== 'all') && (
+            {(activeIndustry !== 'all' || activeSub !== 'all') && (
               <div className="flex flex-wrap items-center gap-2 mb-5">
                 {activeIndustry !== 'all' && (
                   <span
@@ -243,18 +204,6 @@ export default function ProductsPage() {
                       onClick={() => setSub('all')}
                       className="ml-0.5 hover:opacity-70"
                       aria-label="Remove category filter"
-                    >
-                      <X size={11} />
-                    </button>
-                  </span>
-                )}
-                {activeUseCase !== 'all' && isFoodSelected && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#ecfdf5] text-[#0e9f6e] border border-[#0e9f6e]/30">
-                    {foodUseCases.find(u => u.id === activeUseCase)?.name}
-                    <button
-                      onClick={() => setUseCase('all')}
-                      className="ml-0.5 hover:opacity-70"
-                      aria-label="Remove use case filter"
                     >
                       <X size={11} />
                     </button>
