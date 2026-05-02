@@ -5,7 +5,7 @@ interface MedistLogoProps {
 }
 
 export default function MedistLogo({ className = '', variant = 'dark', size = 'md' }: MedistLogoProps) {
-  const height = size === 'lg' ? 56 : size === 'sm' ? 32 : 40;
+  const height = size === 'lg' ? 140 : size === 'sm' ? 80 : 100;
 
   return (
     <img

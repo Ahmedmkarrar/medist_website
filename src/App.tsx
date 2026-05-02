@@ -35,7 +35,7 @@ function AnimatedRoutes() {
 
 function NotFound() {
   return (
-    <main id="main-content" className="min-h-screen flex items-center justify-center bg-white pt-16">
+    <main id="main-content" className="min-h-screen flex items-center justify-center bg-white pt-[124px]">
       <div className="text-center px-6">
         <p className="text-6xl font-bold text-[#1558a7] mb-3">404</p>
         <h1 className="text-xl font-bold text-[#0f1e35] mb-2">Page not found</h1>
@@ -53,7 +53,7 @@ export default function App() {
         Skip to main content
       </a>
       <Navbar />
-      <div className="pt-16">
+      <div className="pt-[124px]">
         <AnimatedRoutes />
       </div>
       <Footer />

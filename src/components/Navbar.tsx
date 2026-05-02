@@ -119,7 +119,7 @@ export default function Navbar() {
     >
       {/* ── Main nav bar ── */}
       <nav
-        className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-[64px]"
+        className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-[124px]"
         aria-label="Main navigation"
       >
         <Link to="/" aria-label="Medist homepage">
@@ -215,7 +215,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.18 }}
-            className="absolute top-[64px] left-0 right-0 bg-white border-b border-[#e2e8f0] shadow-xl z-50"
+            className="absolute top-[124px] left-0 right-0 bg-white border-b border-[#e2e8f0] shadow-xl z-50"
           >
             <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
               <div className="grid grid-cols-4 gap-8">
