@@ -15,13 +15,14 @@
 
 @layer base {
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
   body {
     font-family: 'Inter', system-ui, sans-serif;
     background: #fff;
     color: #1e293b;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeSpeed;
   }
+  img, svg { display: block; max-width: 100%; }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
@@ -169,11 +170,11 @@
 
 /* ── CARDS ── */
 .card-hover {
-  transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 .card-hover:hover {
-  box-shadow: 0 8px 32px rgba(0,0,0,0.09);
   transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.09);
 }
 
 /* ── STAT CARD ── */
@@ -186,7 +187,7 @@
   border: 2px solid transparent;
   background: linear-gradient(#fff,#fff) padding-box,
               linear-gradient(135deg, #1558a7, #2563eb) border-box;
-  transition: box-shadow 0.2s, transform 0.2s;
+  transition: transform 0.2s ease;
 }
 .cert-badge:hover {
   box-shadow: 0 4px 16px rgba(21,88,167,0.18);
@@ -202,6 +203,8 @@
   display: flex;
   width: max-content;
   animation: marquee-scroll 38s linear infinite;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 .marquee-wrapper:hover .marquee-track { animation-play-state: paused; }
 
@@ -219,7 +222,7 @@
 
 /* ── TESTIMONIAL ── */
 .testimonial-card {
-  transition: box-shadow 0.2s, transform 0.2s;
+  transition: transform 0.2s ease;
 }
 .testimonial-card:hover {
   box-shadow: 0 12px 40px rgba(0,0,0,0.08);
@@ -230,7 +233,7 @@
 .industry-card-wrap {
   position: relative;
   border-top: 3px solid transparent;
-  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  transition: border-color 0.2s ease, transform 0.2s ease;
 }
 .industry-card-wrap:hover {
   box-shadow: 0 10px 36px rgba(0,0,0,0.09);

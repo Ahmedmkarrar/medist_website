@@ -6,14 +6,15 @@ export default function SupplierLogo({ supplier }: { supplier: Supplier }) {
   const hasLogo = !!supplier.logo && !imgError;
 
   const inner = (
-    <div className="flex-shrink-0 w-36 h-16 bg-white border border-[#e2e8f0] rounded-lg flex items-center justify-center mx-3 hover:border-[#1558a7]/30 hover:shadow-sm transition-all group cursor-pointer">
+    <div className="flex-shrink-0 w-36 h-16 bg-white border border-[#e2e8f0] rounded-lg flex items-center justify-center mx-3 hover:border-[#1558a7]/30 transition-colors group cursor-pointer">
       {hasLogo ? (
         <img
           src={supplier.logo}
           alt={supplier.name}
           onError={() => setImgError(true)}
-          className="max-w-[110px] max-h-[44px] object-contain grayscale brightness-0 opacity-60 group-hover:opacity-90 transition-all"
+          className="max-w-[110px] max-h-[44px] object-contain grayscale brightness-0 opacity-60 group-hover:opacity-90 transition-opacity"
           loading="lazy"
+          decoding="async"
           draggable={false}
         />
       ) : (

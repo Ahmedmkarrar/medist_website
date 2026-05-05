@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSearchParams } from 'react-router-dom';
-import { MapPin, Phone, Mail, Clock, CheckCircle, AlertCircle, FileText, FlaskConical, BookOpen, Handshake } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, CheckCircle, AlertCircle, FileText, FlaskConical, BookOpen, Handshake, Printer } from 'lucide-react';
 import CertificationsSection from '../components/CertificationsSection';
 
 // ── Tab config ───────────────────────────────────────────────────────────────
@@ -346,9 +346,13 @@ export default function ContactPage() {
               </div>
               <div className="flex items-center gap-3">
                 <Phone size={15} className="text-[#1558a7] flex-shrink-0" aria-hidden="true" />
-                <a href="tel:+971000000000" className="text-sm text-[#374151] hover:text-[#1558a7] transition-colors">
-                  +971 0 000 0000
+                <a href="tel:+97147017500" className="text-sm text-[#374151] hover:text-[#1558a7] transition-colors">
+                  +971 4 701 7500
                 </a>
+              </div>
+              <div className="flex items-center gap-3">
+                <Printer size={15} className="text-[#1558a7] flex-shrink-0" aria-hidden="true" />
+                <span className="text-sm text-[#374151]">Fax: +971 4 701 7501</span>
               </div>
               <div className="flex items-center gap-3">
                 <Mail size={15} className="text-[#1558a7] flex-shrink-0" aria-hidden="true" />

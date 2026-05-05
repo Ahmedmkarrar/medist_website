@@ -5,13 +5,15 @@ interface MedistLogoProps {
 }
 
 export default function MedistLogo({ className = '', variant = 'dark', size = 'md' }: MedistLogoProps) {
-  const height = size === 'lg' ? 140 : size === 'sm' ? 80 : 100;
+  const height = size === 'lg' ? 110 : size === 'sm' ? 64 : 76;
 
   return (
     <img
       src="/logos/medist-logo.png"
       alt="Medist FZE"
       height={height}
+      decoding="async"
+      fetchPriority="high"
       style={{
         height,
         width: 'auto',

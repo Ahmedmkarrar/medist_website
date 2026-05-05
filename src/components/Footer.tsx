@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { MapPin, Phone, Mail } from 'lucide-react';
+import { MapPin, Phone, Mail, Printer } from 'lucide-react';
 import MedistLogo from './MedistLogo';
 
 const quickLinks = [
@@ -105,9 +105,13 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone size={14} className="text-white/40 flex-shrink-0" aria-hidden="true" />
-                <a href="tel:+971000000000" className="text-white/55 hover:text-white text-sm transition-colors">
-                  +971 0 000 0000
+                <a href="tel:+97147017500" className="text-white/55 hover:text-white text-sm transition-colors">
+                  +971 4 701 7500
                 </a>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <Printer size={14} className="text-white/40 flex-shrink-0" aria-hidden="true" />
+                <span className="text-white/55 text-sm">Fax: +971 4 701 7501</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail size={14} className="text-white/40 flex-shrink-0" aria-hidden="true" />

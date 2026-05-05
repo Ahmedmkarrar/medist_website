@@ -69,7 +69,15 @@ export default function Navbar() {
   const location   = useLocation();
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 10);
+    let ticking = false;
+    const fn = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 10);
+        ticking = false;
+      });
+    };
     window.addEventListener('scroll', fn, { passive: true });
     return () => window.removeEventListener('scroll', fn);
   }, []);
@@ -115,11 +123,12 @@ export default function Navbar() {
       className={`fixed top-0 left-0 right-0 z-50 bg-white transition-shadow duration-200 ${
         scrolled ? 'shadow-md' : 'border-b border-gray-100'
       }`}
+      style={{ transform: 'translateZ(0)' }}
       role="banner"
     >
       {/* ── Main nav bar ── */}
       <nav
-        className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-[124px]"
+        className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-[96px]"
         aria-label="Main navigation"
       >
         <Link to="/" aria-label="Medist homepage">
@@ -215,7 +224,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.18 }}
-            className="absolute top-[124px] left-0 right-0 bg-white border-b border-[#e2e8f0] shadow-xl z-50"
+            className="absolute top-[96px] left-0 right-0 bg-white border-b border-[#e2e8f0] shadow-xl z-50"
           >
             <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
               <div className="grid grid-cols-4 gap-8">
