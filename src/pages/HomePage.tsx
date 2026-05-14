@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import HeroSection from '../components/HeroSection';
 import IndustriesSection from '../components/IndustriesSection';
+import ProductHighlight from '../components/ProductHighlight';
 import WhyMedist from '../components/WhyMedist';
 import CtaBanner from '../components/CtaBanner';
 
@@ -78,6 +79,9 @@ export default function HomePage() {
 
       {/* ── Core Capabilities ── */}
       <IndustriesSection />
+
+      {/* ── Pharma Showcase ── */}
+      <ProductHighlight />
 
       {/* ── Execution Defines Reliability ── */}
       <WhyMedist />
