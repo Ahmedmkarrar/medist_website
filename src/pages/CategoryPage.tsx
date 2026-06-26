@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, FlaskConical, Wheat, Sparkles, Microscope } from 'lucide-react';
 import { industries } from '../data/industries';
 import CtaBanner from '../components/CtaBanner';
+import SubcategorySlideshow from '../components/SubcategorySlideshow';
 
 // Icons keyed to industry id
 const industryIcons: Record<string, React.ElementType> = {
@@ -104,7 +105,7 @@ export default function CategoryPage() {
           <section
             key={sub.id}
             id={`sub-${sub.id}`}
-            className={`scroll-mt-[180px] py-14 ${idx % 2 === 1 ? 'bg-[#f6f8fa]' : 'bg-white'}`}
+            className={`scroll-mt-[180px] py-16 lg:py-20 ${idx % 2 === 1 ? 'bg-[#f6f8fa]' : 'bg-white'}`}
           >
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
               <div className="flex items-end justify-between gap-4 mb-7">
@@ -120,6 +121,11 @@ export default function CategoryPage() {
                 <span className="text-sm text-[#94a3b8] flex-shrink-0 hidden sm:block">
                   {sub.products.length} products
                 </span>
+              </div>
+
+              {/* Image slideshow band — slides drop in via each sub-category's `images` array */}
+              <div className="mb-8">
+                <SubcategorySlideshow images={sub.images} color={industry.color} name={sub.name} />
               </div>
 
               <motion.ul

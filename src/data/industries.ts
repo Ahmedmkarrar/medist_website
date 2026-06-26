@@ -2,6 +2,7 @@ export interface SubCategory {
   id: string;
   name: string;
   products: string[];
+  images?: string[]; // optional slideshow images shown in the sub-category section
 }
 
 export interface Industry {
@@ -35,6 +36,11 @@ export const industries: Industry[] = [
       {
         id: 'apis',
         name: 'APIs',
+        images: [
+          '/supp_pics/nonbye-pills-4883677_1920.jpg',
+          '/supp_pics/peterfranz-tablets-2142856_1920.jpg',
+          '/supp_pics/ajs1-pill-5263028_1920.jpg',
+        ],
         products: [
           'Paracetamol (Acetaminophen)',
           'Ibuprofen',
