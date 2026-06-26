@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { GitMerge, Globe2, ShieldCheck, Target } from 'lucide-react';
 import HeroSection from '../components/HeroSection';
 import IndustriesSection from '../components/IndustriesSection';
 import ProductHighlight from '../components/ProductHighlight';
@@ -31,6 +32,13 @@ const whyOperate = [
   'With a clear focus on continuity, accuracy, and control',
 ];
 
+const movementPillars = [
+  { icon: GitMerge, title: 'Aligning supply with demand', body: 'Matching the right materials to the right markets, at the right time.' },
+  { icon: Globe2, title: 'Coordinating across borders', body: 'Managing cross-border trade, logistics, and documentation end to end.' },
+  { icon: ShieldCheck, title: 'Meeting every standard', body: 'Each transaction held to both regulatory and operational requirements.' },
+  { icon: Target, title: 'A single point of control', body: 'One accountable partner across sourcing, movement, and delivery.' },
+];
+
 export default function HomePage() {
   return (
     <main id="main-content">
@@ -43,6 +51,10 @@ export default function HomePage() {
         subtitleExtra="Enabling manufacturers to expand into new markets while ensuring buyers maintain consistent, dependable supply."
         primaryCta={{ label: 'Request a Quote', to: '/contact' }}
         secondaryCta={{ label: 'Explore Capabilities', to: '/products' }}
+        // Hero slideshow — add new images here as they come in (drop files in /public).
+        backgroundImages={[
+          '/hero-shipping.jpg',
+        ]}
         card={{
           heading: 'Built for critical supply chains',
           items: [
@@ -74,6 +86,23 @@ export default function HomePage() {
               operational standards. In environments defined by uncertainty, we act as a point of control.
             </p>
           </motion.div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-12">
+            {movementPillars.map(({ icon: Icon, title, body }, i) => (
+              <motion.div
+                key={title}
+                initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ duration: 0.45, delay: i * 0.08 }}
+                className="flex flex-col gap-3"
+              >
+                <div className="w-11 h-11 rounded-xl bg-[#eff6ff] flex items-center justify-center" aria-hidden="true">
+                  <Icon size={21} className="text-[#1d5fa8]" strokeWidth={1.75} />
+                </div>
+                <h3 className="text-sm font-bold text-[#0f1e35]">{title}</h3>
+                <p className="text-sm text-[#64748b] leading-relaxed">{body}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 

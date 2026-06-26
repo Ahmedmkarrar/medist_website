@@ -131,8 +131,10 @@ export default function Navbar() {
         className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-[96px]"
         aria-label="Main navigation"
       >
-        <Link to="/" aria-label="Medist homepage">
-          <MedistLogo variant="dark" size="md" />
+        <Link to="/" aria-label="Medist homepage" className="flex-shrink-0">
+          {/* Logo doubled (~76→150px). The square PNG's transparent padding keeps the
+              wordmark inside the 96px bar, so header height + button stay unchanged. */}
+          <MedistLogo variant="dark" heightPx={150} />
         </Link>
 
         {/* Desktop */}
@@ -234,7 +236,7 @@ export default function Navbar() {
                     <div key={ind.id}>
                       {/* Industry header */}
                       <Link
-                        to={`/products?industry=${ind.id}`}
+                        to={`/products/${ind.slug}`}
                         className="flex items-center gap-2 mb-4 group"
                       >
                         <div
@@ -257,7 +259,7 @@ export default function Navbar() {
                         {ind.subcategories.map(sub => (
                           <li key={sub.id}>
                             <Link
-                              to={`/products?industry=${ind.id}&sub=${sub.id}`}
+                              to={`/products/${ind.slug}#sub-${sub.id}`}
                               className="flex items-center gap-1.5 text-sm text-[#374151] hover:text-[#1558a7] py-1 transition-colors group"
                             >
                               <span className="w-1 h-1 rounded-full bg-[#cbd5e1] flex-shrink-0 group-hover:bg-[#1558a7] transition-colors" aria-hidden="true" />
@@ -269,7 +271,7 @@ export default function Navbar() {
 
                       {/* View all link */}
                       <Link
-                        to={`/products?industry=${ind.id}`}
+                        to={`/products/${ind.slug}`}
                         className="inline-flex items-center gap-1 text-xs font-semibold text-[#1558a7] hover:underline"
                       >
                         View all {ind.name}
@@ -300,7 +302,7 @@ export default function Navbar() {
               {industries.map(ind => (
                 <div key={ind.id}>
                   <Link
-                    to={`/products?industry=${ind.id}`}
+                    to={`/products/${ind.slug}`}
                     className="block py-2 text-sm font-semibold text-[#0f1e35] hover:text-[#1558a7]"
                   >
                     {ind.name}
@@ -308,7 +310,7 @@ export default function Navbar() {
                   {ind.subcategories.map(sub => (
                     <Link
                       key={sub.id}
-                      to={`/products?industry=${ind.id}&sub=${sub.id}`}
+                      to={`/products/${ind.slug}#sub-${sub.id}`}
                       className="block py-1.5 pl-4 text-sm text-[#64748b] hover:text-[#1558a7]"
                     >
                       {sub.name}

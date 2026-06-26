@@ -2,10 +2,12 @@ interface MedistLogoProps {
   className?: string;
   variant?: 'dark' | 'light';
   size?: 'sm' | 'md' | 'lg';
+  /** Explicit pixel height — overrides the `size` preset when provided. */
+  heightPx?: number;
 }
 
-export default function MedistLogo({ className = '', variant = 'dark', size = 'md' }: MedistLogoProps) {
-  const height = size === 'lg' ? 110 : size === 'sm' ? 64 : 76;
+export default function MedistLogo({ className = '', variant = 'dark', size = 'md', heightPx }: MedistLogoProps) {
+  const height = heightPx ?? (size === 'lg' ? 110 : size === 'sm' ? 64 : 76);
 
   return (
     <img

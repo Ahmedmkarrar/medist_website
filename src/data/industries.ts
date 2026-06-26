@@ -6,7 +6,9 @@ export interface SubCategory {
 
 export interface Industry {
   id: string;
+  slug: string;        // URL slug for the dedicated category page
   name: string;
+  blurb: string;       // intro paragraph shown on the category landing page
   icon: string;
   color: string;
   lightBg: string;
@@ -23,7 +25,9 @@ function makeIndustry(
 export const industries: Industry[] = [
   makeIndustry({
     id: 'pharma',
+    slug: 'pharmaceuticals',
     name: 'Pharmaceuticals',
+    blurb: 'Active pharmaceutical ingredients, excipients and coatings, finished dosage forms, and full regulatory support — sourced from certified manufacturers and delivered with complete documentation for regulated GCC markets.',
     icon: 'pharma',
     color: '#1558a7',
     lightBg: '#eff6ff',
@@ -113,7 +117,9 @@ export const industries: Industry[] = [
 
   makeIndustry({
     id: 'food',
+    slug: 'food-beverage',
     name: 'Food & Beverage',
+    blurb: 'A complete portfolio of food and beverage ingredients — from bakery, dairy, and confectionery systems to juices, snacks, culinary, and meat applications — backed by consistent supply and food-safety compliance.',
     icon: 'food',
     color: '#0e9f6e',
     lightBg: '#ecfdf5',
@@ -284,7 +290,9 @@ export const industries: Industry[] = [
 
   makeIndustry({
     id: 'personal',
+    slug: 'personal-home-care',
     name: 'Personal & Home Care',
+    blurb: 'Raw materials for skin care, hair care, oral care, and household formulations — cosmetic- and technical-grade ingredients delivered with the consistency and documentation formulators depend on.',
     icon: 'personal',
     color: '#7c3aed',
     lightBg: '#f5f3ff',
@@ -376,7 +384,9 @@ export const industries: Industry[] = [
 
   makeIndustry({
     id: 'lab',
+    slug: 'laboratory-equipment',
     name: 'Laboratory Equipment',
+    blurb: 'Analytical instruments, QC equipment, and application-scale lab tools that support quality control, formulation development, and pharmacopoeial testing across pharmaceutical and food laboratories.',
     icon: 'lab',
     color: '#c05621',
     lightBg: '#fff7ed',

@@ -9,25 +9,25 @@ const solutions = [
     icon: Truck,
     title: 'Distribution & Cold Chain',
     body: 'End-to-end logistics covering ambient, chilled, and frozen distribution across the GCC — with full cold-chain monitoring and documentation for temperature-sensitive products.',
-    image: true,
+    img: { src: '/supp_pics/peterfranz-tablets-2142856_1920.jpg', alt: 'Amber softgels and white tablets in blister packs ready for distribution' },
   },
   {
     icon: FlaskConical,
     title: 'Application & Formulation Support',
     body: 'Our in-house application scientists work directly with your R&D teams to optimise formulations, run trials, and identify the most cost-effective ingredient solutions.',
-    image: true,
+    img: { src: '/supp_pics/heungsoon-approximately-3887443_1920.jpg', alt: 'Pharmaceutical softgel capsule held by precision tweezers during formulation work' },
   },
   {
     icon: FileCheck,
     title: 'Regulatory & Compliance',
     body: 'Full dossier preparation, product registration support, and ongoing compliance monitoring across SFDA, MOH, and other GCC regulatory authorities.',
-    image: false,
+    img: null,
   },
   {
     icon: BookOpen,
     title: 'Trade & Documentation',
     body: 'We handle all import documentation, certificates of analysis, Halal/Kosher certificates, and regulatory paperwork — ensuring seamless customs clearance every time.',
-    image: false,
+    img: null,
   },
 ];
 
@@ -46,7 +46,7 @@ export default function SolutionsPage() {
       <section className="bg-white py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {solutions.map(({ icon: Icon, title, body, image }, i) => (
+            {solutions.map(({ icon: Icon, title, body, img }, i) => (
               <motion.article
                 key={title}
                 initial={{ opacity: 0, y: 20 }}
@@ -55,7 +55,7 @@ export default function SolutionsPage() {
                 transition={{ duration: 0.5, delay: i * 0.08 }}
                 className="flex flex-col gap-5"
               >
-                <div className={`grid ${image ? 'sm:grid-cols-[1fr_180px]' : ''} gap-5 items-start`}>
+                <div className={`grid ${img ? 'sm:grid-cols-[1fr_180px]' : ''} gap-5 items-start`}>
                   <div>
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-10 h-10 rounded-lg bg-[#eff6ff] flex items-center justify-center flex-shrink-0" aria-hidden="true">
@@ -65,12 +65,14 @@ export default function SolutionsPage() {
                     </div>
                     <p className="text-sm text-[#64748b] leading-relaxed">{body}</p>
                   </div>
-                  {image && (
-                    <div
-                      className="rounded-lg overflow-hidden h-32 sm:h-full bg-[#f1f5f9] flex items-center justify-center"
-                      aria-label={`${title} image placeholder`}
-                    >
-                      <p className="text-xs text-[#94a3b8] text-center px-2">Photo</p>
+                  {img && (
+                    <div className="rounded-lg overflow-hidden h-32 sm:h-full bg-[#f1f5f9]">
+                      <img
+                        src={img.src}
+                        alt={img.alt}
+                        loading="lazy"
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                   )}
                 </div>

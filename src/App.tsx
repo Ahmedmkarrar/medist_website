@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import ProductsPage from './pages/ProductsPage';
+import CategoryPage from './pages/CategoryPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import SolutionsPage from './pages/SolutionsPage';
@@ -20,8 +21,9 @@ function AnimatedRoutes() {
         exit={{ opacity: 0, transition: { duration: 0.15 } }}
       >
         <Routes location={location}>
-          <Route path="/"           element={<HomePage />} />
-          <Route path="/products"   element={<ProductsPage />} />
+          <Route path="/"             element={<HomePage />} />
+          <Route path="/products"     element={<ProductsPage />} />
+          <Route path="/products/:slug" element={<CategoryPage />} />
           <Route path="/solutions"  element={<SolutionsPage />} />
           <Route path="/resources"  element={<ResourcesPage />} />
           <Route path="/about"      element={<AboutPage />} />

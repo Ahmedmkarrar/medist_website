@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { MapPin, Phone, Mail, Printer } from 'lucide-react';
+import { MapPin, Phone, Mail, MessageCircle } from 'lucide-react';
 import MedistLogo from './MedistLogo';
 
 const quickLinks = [
@@ -27,14 +27,6 @@ function LinkedInIcon() {
   );
 }
 
-function TwitterIcon() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-    </svg>
-  );
-}
-
 export default function Footer() {
   return (
     <footer className="bg-[#0b1d35] text-white" role="contentinfo">
@@ -56,13 +48,6 @@ export default function Footer() {
                 aria-label="Medist on LinkedIn"
               >
                 <LinkedInIcon />
-              </a>
-              <a
-                href="#"
-                className="w-8 h-8 rounded-lg bg-white/8 hover:bg-white/15 flex items-center justify-center text-white/60 hover:text-white transition-colors"
-                aria-label="Medist on X / Twitter"
-              >
-                <TwitterIcon />
               </a>
             </div>
           </div>
@@ -101,17 +86,25 @@ export default function Footer() {
             <ul className="flex flex-col gap-3 list-none">
               <li className="flex items-start gap-2.5">
                 <MapPin size={14} className="text-white/40 mt-0.5 flex-shrink-0" aria-hidden="true" />
-                <span className="text-white/55 text-sm">Dubai, United Arab Emirates</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Phone size={14} className="text-white/40 flex-shrink-0" aria-hidden="true" />
-                <a href="tel:+97147017500" className="text-white/55 hover:text-white text-sm transition-colors">
-                  +971 4 701 7500
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=25.2580424,55.3214658"
+                  target="_blank" rel="noopener noreferrer"
+                  className="text-white/55 hover:text-white text-sm transition-colors"
+                >
+                  4D Street, Riggat Al Buteen<br />Dubai, United Arab Emirates
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
-                <Printer size={14} className="text-white/40 flex-shrink-0" aria-hidden="true" />
-                <span className="text-white/55 text-sm">Fax: +971 4 701 7501</span>
+                <Phone size={14} className="text-white/40 flex-shrink-0" aria-hidden="true" />
+                <a href="tel:+971561117261" className="text-white/55 hover:text-white text-sm transition-colors">
+                  +971 56 111 7261
+                </a>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <MessageCircle size={14} className="text-[#25D366] flex-shrink-0" aria-hidden="true" />
+                <a href="https://wa.me/971561117261" target="_blank" rel="noopener noreferrer" className="text-white/55 hover:text-white text-sm transition-colors">
+                  WhatsApp
+                </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail size={14} className="text-white/40 flex-shrink-0" aria-hidden="true" />
